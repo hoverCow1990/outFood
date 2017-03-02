@@ -17,7 +17,7 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync').create();
 
 //各各文件路径 
-var {INC_URL,SRC_BASE,SRC_ALL,SRC_HTML,SRC_INC,SRC_LCSS,SRC_JS,SRC_IMG,DEV_BASE,DEV_HTML,DEV_LCSS,DEV_JS,DEV_IMG,BLD_BASE,BLD_HTML,BLD_LCSS,BLD_JS,BLD_IMG,MIX_CSSBOOL,MIX_CSSName,MIX_CSSPATH,MIX_JS,MIX_JSName,MIX_JSSPATH,WATCH_FILE} = require('./gulpConfig/paths.js').path;
+var {INC_URL,SRC_BASE,SRC_ALL,SRC_HTML,SRC_INC,SRC_LCSS,SRC_JS,SRC_IMG,DEV_BASE,DEV_HTML,DEV_LCSS,DEV_JS,DEV_IMG,BLD_BASE,BLD_HTML,BLD_LCSS,BLD_JS,BLD_IMG,MIX_CSSBOOL,MIX_CSSName,MIX_CSSPATH,MIX_JS,MIX_JSName,MIX_JSSPATH,WATCH_FILE} = require('./paths.js').path;
 //服务器设置
 var HOST = {
     path: './',
@@ -34,7 +34,6 @@ var BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
  * HTML处理部分
  *
  */
-console.log(SRC_HTML);
 //开发模式
 gulp.task('handlerDevHtml', function() {
     gulp.src(SRC_HTML)
@@ -81,10 +80,10 @@ var concatCss = function(){
                  .pipe(concat(MIX_CSSName))//合并后的文件名
                  .pipe(gulp.dest(BLD_LCSS))
             }
-
+console.log(SRC_LCSS);
 //开发模式
 gulp.task('handlerDevCss', function () {
-    gulp.src(SRC_LCSS) 
+    gulp.src(SRC_LCSS)
         .pipe(less())
         .pipe(gulp.dest(DEV_LCSS))
         .on("end",function(){

@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="../css/weui.min.css">
-<link rel="stylesheet" type="text/css" href="../css/jquery-weui.min.css">
-<link rel="stylesheet" type="text/css" href="../css/reset.css">
-<link rel="stylesheet" type="text/css" href="../css/header.css">
-<link rel="stylesheet" type="text/css" href="../css/footer.css">
-<link rel="stylesheet" type="text/css" href="../css/index.css">
-<link rel="stylesheet" type="text/css" href="../css/storeList.css">
-<script src='../js/common.js'></script>
-<title>老牛外卖首页</title>
-</head>
-<body>
-@@include('../templates/header.inc')
+var indexTemplate = `
 <section id='outFood-carousel' class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
   <div class="swiper-wrapper">
     <div class="swiper-slide"><img src="../images/carousel/1.jpg" alt=""></div>
@@ -28,16 +12,12 @@
 <nav class='outFood-nav'>
     <div class="weui-flex">
   		<div class="weui-flex__item">
-  			<a href='http://localhost:3000/dist/views/index.html#/search/meishi'>
-	  			<img src="../images/indexNav/1.png" alt="">
-	  			<p>美食</p>
-	  		</a>
+  			<img src="../images/indexNav/1.png" alt="">
+  			<p>美食</p>
   		</div>
   		<div class="weui-flex__item">
-  			<a href="http://localhost:3000/dist/views/index.html#/download/user/images/hey.gif">
-	  			<img src="../images/indexNav/2.png" alt="">
-	  			<p>海鲜</p>
-	  		</a>
+  			<img src="../images/indexNav/2.png" alt="">
+  			<p>海鲜</p>
   		</div>
   		<div class="weui-flex__item">
   			<img src="../images/indexNav/3.png" alt="">
@@ -95,10 +75,11 @@
 		<h3>附近饮食</h3>
 		<p>Nearby diet</p>
 	</div>
-@@include('../templates/shopList.inc')
+  <div id='storeList-wrapper'>
+  </div>
 </section>
-<div style='height:60px'></div>
-@@include('../templates/footer.inc')
-<script src='../js/index.js'></script>
-</body>
-</html>
+`
+
+
+
+export default indexTemplate; 

@@ -5,7 +5,6 @@ var srcDir   =  path.join(__dirname, './src');
 var SRC_JS   =  path.join(srcDir + "/js");
 var distDir  =  path.join(__dirname, './dist');	 
 var CommonsChunkPlugin  =  webpack.optimize.CommonsChunkPlugin;
-
 //入口文件
 var entryDir =  {}; //entry入口
 
@@ -26,7 +25,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
 			names: "common.js",   //['index','login']
 		    filename: 'common.js',    
-		    chunks: ['index','login','regist'],
+		    chunks: ['app','index','login','regist'],
 		    minChunks: Infinity //3-5
 		}),
 		new webpack.ProvidePlugin({    //全局变量
@@ -34,7 +33,8 @@ module.exports = {
 		    jQuery: "jquery",
 		    "window.jQuery": "jquery",
 		    "Backbone" : "Backbone",
-		    '_':'underscore'
+		    '_':'underscore',
+		    'juicer' : 'juicer',
 	    })
     ]
 }

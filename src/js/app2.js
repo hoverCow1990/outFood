@@ -75,7 +75,7 @@ var scrollScreen = {
 // Backbone.history.start();
 
 
-history.pushState(2,' ','http://localhost:3000/dist/views/regist.html')
+//history.pushState(2,' ','http://localhost:3000/dist/views/regist.html')
 // setTimeout(function(){
 // 	man1.set('name',"hello");
 // },3000)
