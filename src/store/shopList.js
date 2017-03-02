@@ -1,3 +1,9 @@
-const shopList = new Backbone.Collection();
+import shopList from '../component/shopList/shopList'
 
-export default shopList;
+var shopListData = new Backbone.Collection();
+
+// shopListData.on('set',function(){
+// 	shopList.render();
+// })
+
+export default shopListData;

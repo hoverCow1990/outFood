@@ -1,0 +1,50 @@
+@import './regular.less';
+
+.adminDetail{
+	.admin-logo{
+		height:2.1rem;
+		img{
+			width:100%;
+		}
+	}
+	.coupon-container{
+		padding-top:6px;
+		padding-bottom:6px;
+		border-bottom:5px solid #f1f1f1; 
+		&>div{
+			text-align:center;
+			&:nth-child(2){
+				border-left:1px solid @greyLine;
+				border-right:1px solid  @greyLine;
+			}
+			.info{
+				font-size:12px;
+				color:#999;
+				span{
+					font-size:16px;
+					margin-right:2px;
+				}
+
+			}
+			.logo{
+				margin-top:5px;
+				font-size:13px;
+				letter-spacing:1px;
+				color:#272727;
+			}
+		}
+	}
+	.admin-list{
+		margin-top:0;
+		i{
+			display:block;
+			float:left; 
+			margin-right:12px;
+		}
+		p{
+			float:left; 
+			font-size:14px;
+			color:#999;
+		}
+	} 
+}

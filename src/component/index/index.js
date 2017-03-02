@@ -3,8 +3,7 @@ import fastclick from '../../plug-in/fastclick.js';
 import weui from '../../plug-in/jquery-weui.min';
 import swiper from '../../plug-in/swiper.min';
 import ShopList from '../shopList/shopList';
-import requestUrl from '../../requestUrl/requestUrl';
-import shopListData from '../../store/shopList';
+import {requestShopList} from '../../requestApi/requestApi';
 
 
 var Index = Backbone.View.extend({  
@@ -22,7 +21,7 @@ var Index = Backbone.View.extend({
   	},
 	render : function($dom){  
 	    this.el.innerHTML = this.template();
-	    $dom.text()
+	    $dom.text('')
 	    $dom.append(this.el);  
 	    this.initEvents();
 	},
@@ -32,24 +31,6 @@ var Index = Backbone.View.extend({
 		    autoplay: 3000,
 		    paginationClickable: true
 		});
-		$.ajax({
-			url : requestUrl.shopList,
-			type : 'post',
-			data : {
-				start : 0,
-				end : 5
-			},
-			dataType : 'json',
-			success: function(data){
-				data.forEach(function(item){
-					shopListData.add(JSON.parse(item));
-				})
-				ShopList.render($('#storeList-wrapper'));
-			},
-			error:function(err){
-				console.log(err)
-			}
-		})
 	}
 });  
 

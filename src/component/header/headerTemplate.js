@@ -1,6 +1,6 @@
 var HeaderTemplate = `
   <div class="header-info weui-flex__item">
-    <input class='info' readonly="readonly" value='长桥八村27号'/>
+    <input class='info' readonly="readonly" value="<%= adress =>"/>
     <i class='icon-shouhuodizhi'></i>
   </div>
   <div class="header-search weui-flex__item">
