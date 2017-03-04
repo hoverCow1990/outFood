@@ -5,7 +5,7 @@ import Footer from '../component/footer/footer';
 import AdminDetail from '../component/adminDetail/adminDetail';
 import globalData from '../store/globalData';
 import shopListData from '../store/ShopListData';
-import adminDetailDate from '../store/adminDetail';
+import adminDetailData from '../store/adminDetailData';
 
 //修改据juicer的内置变量符号(encode类型)
 //原本为${}由于使用``避免与原语法冲突修改为%{}
@@ -28,7 +28,8 @@ var indexShow = {
 		//var cb = this.handlerScroll.bind(this);
 		Header.render();
 		Index.render();
-		ShopList.handlerRequest($('#shopList-container'));
+		ShopList.initialize();
+		ShopList.handlerRequest();
 		ShopList.render();
 		Footer.render();
 	}
@@ -52,8 +53,8 @@ var shopListShow = $.extend({},indexShow,{
 
 var adminDetailShow = $.extend({},indexShow,{
 	init : function(){
-		Header.render($('#header'));
-		Footer.render($('#footer'));
+		Header.render();
+		Footer.render();
 		AdminDetail.render();
 	},
 })
@@ -76,7 +77,7 @@ var app_router = new AppRouter();
 
 //首页页面
 app_router.on('route:index', function(id){
-	globalData.set({routerId:id});
+	globalData.set({routerId:null});
 	indexShow.init.call(indexShow);
 });
 //用户详情页面
@@ -93,7 +94,7 @@ app_router.on('route:shopList',function(id){
 Backbone.history.start();
 
 /*
- * adminDetailDate地址发生变化时对Header渲染
+ * adminDetailData地址发生变化时对Header渲染
  * 作者:hoverCow,日期:2017-03-02
  */
 
@@ -102,17 +103,17 @@ shopListData.on('reset set add',function(){
 })
 
 /*
- * adminDetailDate地址发生变化时对Header渲染
+ * adminDetailData地址发生变化时对Header渲染
  * 如果此时页面为adminDetail,则同时对adminDetail渲染
  * 作者:hoverCow,日期:2017-03-03
  */
 
-adminDetailDate.on('change:adress',function(){
+adminDetailData.on('change:adress',function(){
 	Header.render();
 	//if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
 })
 
-adminDetailDate.on('change',function(){
+adminDetailData.on('change',function(){
 	if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
 })
 

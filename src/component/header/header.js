@@ -1,8 +1,8 @@
 import HeaderTemplate from './headerTemplate';
 import {headerConfig} from '../../defaultConfig/config';
 import {requestadminDetail} from '../../requestApi/requestApi';
-import adminDetail from '../../store/adminDetail';
-
+import adminDetailData from '../../store/adminDetailData';
+import {baseHost} from '../../defaultConfig/config';
 
  /*
  *  头部导航部分
@@ -14,7 +14,8 @@ var Header = Backbone.View.extend({
 	tagName : 'div',  
 	className : 'weui-flex',
 	events :{
- 
+ 		'keyup .search' : 'handlerSearch',
+ 		'touchstart .submit' : 'handerSubmit'
 	},
 	//发送用户信息请求,用于获取地址
 	initialize : function(){
@@ -22,7 +23,7 @@ var Header = Backbone.View.extend({
 	},
 	//模板需求信息为数据层adminDetail内的adress
   	template: function(){
-  		var data = {adress : adminDetail.toJSON().adress};  
+  		var data = {adress : adminDetailData.toJSON().adress};  
   		if(data.adress === void 0) return '';
 		return juicer(HeaderTemplate, data);
   	},
@@ -32,6 +33,7 @@ var Header = Backbone.View.extend({
 	    this.el.innerHTML = this.template();
 	    $dom.append(this.el);  
 	    this.initEvents($dom);
+	    this.delegateEvents();  	//渲染后需要重新激活按键事件
 	},
 	//变黑动画函数,maxTop来自headerConfig为200
 	initEvents : function($dom){
@@ -51,6 +53,20 @@ var Header = Backbone.View.extend({
 	//注销头部导航的动画
 	cancelEvent : function(){
 		$('#index').off('touchmove.nav');
+	},
+	handlerSearch : function(e){
+		var $input = $(e.target),
+			$sub = $input.next().next(),
+			val = $input.val();
+		if(val !== ''){
+			$sub.addClass('active');
+		}else{
+			$sub.removeClass('active');
+		}
+	},
+	handerSubmit : function(){
+		var val = $('.search',this.$el).val();
+		window.location = baseHost + '#/shopList/' + val;
 	}
 });  
 

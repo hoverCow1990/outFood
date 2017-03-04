@@ -38,12 +38,6 @@ var AdminDetailTemplate = `
 	    </div>
 	    <div class="weui-cell__ft"><i class='icon-xiangyoujiantou'></i></div>
 	  </div>
-	  <div class="weui-cell" data-ev="friend">
-	    <div class="weui-cell__bd">
-	      <p><i class='icon-xiaoxizhongxin'></i>我的好友</p>
-	    </div>
-	    <div class="weui-cell__ft"><i class='icon-xiangyoujiantou'></i></div>
-	  </div>
 	  <div class="weui-cell" data-ev="recharge">
 	    <div class="weui-cell__bd">
 	      <p><i class='icon-wodeyouhuiquan'></i>充值现金</p>

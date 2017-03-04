@@ -3,11 +3,11 @@ import {baseHost} from '../../defaultConfig/config';
 var indexTemplate = `
 <section id='outFood-carousel' class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
   <div class="swiper-wrapper">
-    <div class="swiper-slide"><img src="../images/carousel/1.jpg" alt=""></div>
+    <div class="swiper-slide"><a href=${baseHost}#/shopList/肉><img src="../images/carousel/1.jpg" alt=""></a></div>
     <div class="swiper-slide"><img src="../images/carousel/2.jpg" alt=""></div>
     <div class="swiper-slide"><img src="../images/carousel/3.jpg" alt=""></div>
     <div class="swiper-slide"><img src="../images/carousel/4.jpg" alt=""></div>
-    <div class="swiper-slide"><img src="../images/carousel/5.jpg" alt=""></div>
+    <div class="swiper-slide"><a href=${baseHost}#/shopList/夜宵><img src="../images/carousel/5.jpg" alt=""></a></div>
   </div>
   <div class="swiper-pagination"></div>
 </section>

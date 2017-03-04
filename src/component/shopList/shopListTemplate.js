@@ -17,6 +17,7 @@ var shopListTemplate = `
     {@/each}  
   </div>
   <div class='storeList-lattice'></div>
+  {@if hasData}
   <ul class='menu-list'>
     {@each list as item}  
     <li>
@@ -48,15 +49,19 @@ var shopListTemplate = `
     </li>
     {@/each}  
   </ul>
+  {@else}
+    <p>没有您搜索的数据...</p> 
+  {@/if}  
   <div class="weui-loadmore loadding-box">
     <img src='../images/icon/loading.gif'>
-    <span class="weui-loadmore__tips">加载完毕 ...</span>
+    <span class="weui-loadmore__tips">{@if requestSwitch}玩命加载 ...{@else}已全部加载{@/if}</span>
   </div>
 </div>
 `
 
 juicer.register('getStar',function(num){
-  var str = '';
+  var str = '',
+      num = Math.min(Math.floor(num/500),5);
   for(var i=0;i<num;i++){
     str+="<i class='icon-huo active'></i>"
   }
@@ -64,6 +69,9 @@ juicer.register('getStar',function(num){
 })
 
 juicer.register('getUrl',function(logo){
+  if(arguments[1] === 'banner/'){
+    if('delicious,seafood,fruit,sweet,fast,drink,chinese,discount,love'.match(logo) === null) logo = 'search';
+  }
   return "http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/"+ arguments[1] + logo + arguments[2]+".jpg"
 })
 

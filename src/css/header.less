@@ -64,4 +64,23 @@
 		font-family:'Microsoft YaHei';
 		letter-spacing:2px;
 	}
+	.submit{
+		position:absolute;
+		width:40px;
+		height:@inputHeight;
+		right:0;
+		top:8px;
+		border-radius:0 12px 12px 0;
+		background-color:#fdc329;
+		color:#353535;
+		font-size:12px;
+		font-weight:bold;
+		line-height:24px;
+		text-align:center;
+		transition:.2s;
+		transform:scale(0);
+		&.active{
+			transform:scale(1);
+		}
+	}
 }

@@ -27,6 +27,10 @@
 			&:nth-child(2){
 				border-left:1px solid @greyLine;
 				border-right:1px solid  @greyLine;
+				span{
+					color:#f44;
+					font-weight:bold;
+				}
 			}
 			.info{
 				font-size:12px;
@@ -70,7 +74,7 @@
 		letter-spacing: 1px;
 		text-align: left;
 		font-size:14px;
-		text-indent: 16px;
+		text-indent: 18px;
 	}
 	span{
 		position:absolute;
@@ -81,6 +85,7 @@
 	}
 }
 .weui-dialog__bd{
+	padding: 0 16px 0 16px; 
 	border-bottom: 1px solid #ececec;
 }
 .weui-dialog__ft{
@@ -193,6 +198,19 @@
 				border:1px solid #999;
 				outline:none;
 			}
+		}
+	}
+	.msg{
+		text-align:left;
+		h2{
+			margin-top:10px;
+			margin-bottom:10px;
+			font-size:14px;
+		}
+		p{
+			font-size:12px;
+			margin-bottom:10px;
+			letter-spacing:.5px;
 		}
 	}
 }
