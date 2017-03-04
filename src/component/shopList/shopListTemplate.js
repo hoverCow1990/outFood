@@ -9,7 +9,7 @@ var shopListTemplate = `
     <p><%= ColumnTitle.english =></p>
 </div>
 <div class='storeList-wrapper'>
-  <div class= '<%= isFixed|getClass, "weui-flex storeList-sort" =>'>
+  <div class="weui-flex storeList-sort">
     {@each sortTab as tab}
     <div class='<%= tab.active|getClass, "weui-flex__item sort-btn" =>' data-ev="<%= tab.ev =>">
       <span><%= tab.inner =></span>
@@ -71,11 +71,6 @@ juicer.register('getClass',function(bool){
   var str = bool?" active":"";
   return arguments[1] + str;
 })
-
-// juicer.register('getActive',function(bool){
-//   var str = bool?" active":"";
-//   return "weui-flex storeList-sort" + str;
-// })
 
 
 export default shopListTemplate; 

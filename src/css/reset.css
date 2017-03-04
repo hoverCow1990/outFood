@@ -27,14 +27,21 @@ img{
   border: none;
 }
 input{
-  -webkit-appearance: none;
   outline: none;
   border: none;
 }
 li{
   list-style: none;
 }
+#__bs_notify__{
+  display:none !important;
+}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+
+.weui-dialog .weui-dialog__btn + .weui-dialog__btn:after, .weui-toast .weui-dialog__btn + .weui-dialog__btn:after{
+  border-left:0;
+}
+
 @font-face {
   font-family: "iconfont";
   src: url('../font/iconfont.eot'); /* IE9*/
@@ -76,7 +83,6 @@ i{
    font-size:452%;
   }
 }
-
 .icon-iconfont5:before { content: "\e63a"; }
 
 .icon-gouwuche:before { content: "\e63f"; }

@@ -2,9 +2,20 @@
 
 .adminDetail{
 	.admin-logo{
+		position:relative;
 		height:2.1rem;
 		img{
 			width:100%;
+		}
+		p{
+			position:absolute;
+			width:100%;
+			bottom:44px;
+			font-weight:bold;
+			text-align:center;
+			font-size:16px;
+			color:#0c0c0c;
+			letter-spacing:3px;
 		}
 	}
 	.coupon-container{
@@ -47,4 +58,141 @@
 			color:#999;
 		}
 	} 
+}
+
+.weui-dialog__hd{
+	position:relative;
+	padding: 10px 0 11px 0;
+    height: 15px;
+    border-bottom: 1px solid #ececec;
+	p{
+		color: #565656;
+		letter-spacing: 1px;
+		text-align: left;
+		font-size:14px;
+		text-indent: 16px;
+	}
+	span{
+		position:absolute;
+		right:26px;
+		top:10px;
+		color:#999;
+		font-size:12px;
+	}
+}
+.weui-dialog__bd{
+	border-bottom: 1px solid #ececec;
+}
+.weui-dialog__ft{
+	display:block;
+	float:right;
+	a{
+		box-sizing:border-box;
+		width:58px;
+		height:30px;
+		float:left;
+		margin-top:10px;
+		margin-bottom:10px;
+		line-height:30px;
+		border-radius:3px;
+		font-size:13px;
+		color:#eee;
+		&.default{
+			background-color:#fff;
+			color:#999;
+			border:1px solid #d9d9d9;
+			margin-right:12px;
+		}
+		&.primary{
+			background-color:#108ee9;
+			margin-right:21px;
+		}
+	}
+	&:after{
+			border:0;
+		}
+}
+
+.dialog-wrapper{
+	height:250px;
+	margin-top:12px;
+	max-height:300px;
+	.info-input{
+		input{
+			margin-top:10px;
+			margin-bottom:2px;
+		    border: 1px solid #e6e6e6;
+		    height: 30px;
+		    width: 100%;
+		    border-radius: 2px;
+		    text-indent: 7px;
+		    transition:.2s;
+		    &.err{
+		    	border-color:#f17878; 
+		    }
+		}
+	}
+	.adressList{
+		li{
+			height:30px;
+			padding-top:10px;
+			padding-bottom:10px;
+			border-bottom: 1px solid @greyLine;
+			text-align:left;
+			line-height:30px;
+			&.active .radio:after{
+				transform:scale(1);
+			}
+		}
+		p{
+			width:75%;
+			float:left;
+		}
+		.radio{
+			position:relative;
+			width:28px;
+			height:28px;
+			border-radius:50%;
+			border:1px solid #d6d6d6;
+			float:right;
+			&:after{
+				content:'';
+				position:absolute;
+				width:20px;
+				height:20px;
+				border-radius:50%;
+				background-color:#108ee9;
+				top:4px;
+				left:4px;
+				transition:.3s;
+				transform:scale(0);
+			}
+		}
+		input[type="text"]{
+			box-sizing:border-box;
+			width:70%;
+			height:28px;
+			float:right;
+			border: 1px solid #dedede;
+			border-left:0;
+			border-radius:0 3px 3px 0;
+			text-indent:3px;
+			&.err{
+		    	border-color:#f17878; 
+		    }
+		}
+		select{
+			box-sizing:border-box;
+			width:30%;
+			height:28px;
+			float:left;
+			border: 1px solid #dedede;
+			border-radius:3px 0 0 3px;
+			&:focus,
+			&:active{
+				border:1px solid #999;
+				outline:none;
+			}
+		}
+	}
 }

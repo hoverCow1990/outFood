@@ -4,6 +4,8 @@ import ShopList from '../component/shopList/shopList';
 import Footer from '../component/footer/footer';
 import AdminDetail from '../component/adminDetail/adminDetail';
 import globalData from '../store/globalData';
+import shopListData from '../store/ShopListData';
+import adminDetailDate from '../store/adminDetail';
 
 //修改据juicer的内置变量符号(encode类型)
 //原本为${}由于使用``避免与原语法冲突修改为%{}
@@ -11,6 +13,9 @@ juicer.set({
     'tag::noneencodeOpen': '<%= ',  
     'tag::noneencodeClose': '=>',   
 });  
+
+//关闭模态框点击既关闭的设置
+$.modal.prototype.defaults.autoClose = false;
 
  /*
  *  App首页展示
@@ -20,47 +25,12 @@ juicer.set({
 
 var indexShow = {
 	init : function(){
-		var cb = this.handlerScroll.bind(this);
-		Header.render($('#header'));
-		Index.render($('#app-Wrapper'));
-		ShopList.handlerRequest($('#shopList-container'),cb);
-		Footer.render($('#footer'))
-	},
-	//处理页面滚动事件，包括head头以及动态请求加载shopList
-	handlerScroll : function(){
-		var self = this,
-			loadingSwitch = true,
-			loadingHeight = this.getLoadingHeight(),
-			sortNavHeight = ShopList.getTop() - 40,
-			$sortDom = $('.storeList-sort'),
-			sortNavSwitch = true,
-			scrollTop; 
-		$(window).off('scroll').on('scroll',function(){
-			scrollTop = $(this).scrollTop();
-			if(scrollTop < 200){
-				Header.handlerStyle(scrollTop);
-			}
-			if(scrollTop > loadingHeight && loadingSwitch){
-				loadingSwitch = false;
-				ShopList.handlerRequest($('#shopList-container'),self.shopListCallBack.bind(self,loadingSwitch));
-			}
-			if(scrollTop > sortNavHeight && sortNavSwitch){
-				sortNavSwitch = false;
-				ShopList.templateData.isFixed = true;
-				ShopList.render();
-			}else if(scrollTop < sortNavHeight && !sortNavSwitch){
-				sortNavSwitch = true;
-				ShopList.templateData.isFixed = false;
-				ShopList.render();
-			}
-		})
-	},
-	shopListCallBack : function(){
-		this.handlerScroll();
-		arguments[0] = true;
-	},
-	getLoadingHeight : function(){
-		return $(document).height() - $(window).height() - 50;
+		//var cb = this.handlerScroll.bind(this);
+		Header.render();
+		Index.render();
+		ShopList.handlerRequest($('#shopList-container'));
+		ShopList.render();
+		Footer.render();
 	}
 }
 
@@ -70,11 +40,9 @@ var indexShow = {
 
 var shopListShow = $.extend({},indexShow,{
 	init : function(){
-		var cb = this.handlerScroll.bind(this);
-		Header.render($('#header'));
-		Footer.render($('#footer'))
+		Header.render();
+		Footer.render()
 		ShopList.initState();
-		ShopList.handlerRequest($('#app-Wrapper'),cb)
 	},
 })
 
@@ -82,7 +50,7 @@ var shopListShow = $.extend({},indexShow,{
  * 用户列表
  */
 
-var adminDetail = $.extend({},indexShow,{
+var adminDetailShow = $.extend({},indexShow,{
 	init : function(){
 		Header.render($('#header'));
 		Footer.render($('#footer'));
@@ -93,33 +61,58 @@ var adminDetail = $.extend({},indexShow,{
 
 /*
  * app路由机制
- * 
+ * 键他
  */
 
 var AppRouter = Backbone.Router.extend({
   routes: {
-  	""  : 'index',
-  	"shopList/:query":"shopList",  // #search/kiwis
-  	"adminDetail" : "adminDetail"
+  	""  : 'index',					// 首页
+  	"shopList/:query":"shopList",   // 店铺列表页
+  	"adminDetail" : "adminDetail"	// 用户详情页
   }
 });
- // 实例化 Router
+// 实例化 Router
 var app_router = new AppRouter();
 
-app_router.on('route:index', function (id) {
+//首页页面
+app_router.on('route:index', function(id){
 	globalData.set({routerId:id});
 	indexShow.init.call(indexShow);
 });
-
-app_router.on('route:shopList', function (id) {
+//用户详情页面
+app_router.on('route:adminDetail', function(){
+	globalData.set({routerId:"adminDetail"});
+	adminDetailShow.init.call(adminDetailShow);
+});
+//店铺列表页页面
+app_router.on('route:shopList',function(id){
 	globalData.set({routerId:id});
 	shopListShow.init.call(shopListShow);
 });
 
-app_router.on('route:adminDetail', function (id) {
-	globalData.set({routerId:id});
-	adminDetail.init.call(adminDetail);
-});
-
-
 Backbone.history.start();
+
+/*
+ * adminDetailDate地址发生变化时对Header渲染
+ * 作者:hoverCow,日期:2017-03-02
+ */
+
+shopListData.on('reset set add',function(){
+	ShopList.render();
+})
+
+/*
+ * adminDetailDate地址发生变化时对Header渲染
+ * 如果此时页面为adminDetail,则同时对adminDetail渲染
+ * 作者:hoverCow,日期:2017-03-03
+ */
+
+adminDetailDate.on('change:adress',function(){
+	Header.render();
+	//if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
+})
+
+adminDetailDate.on('change',function(){
+	if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
+})
+

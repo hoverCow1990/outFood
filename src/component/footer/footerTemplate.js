@@ -4,7 +4,7 @@ var HeaderTemplate = `
   	<div class="weui-flex">
 	  <div class="header-info weui-flex__item">
 	  	<div class='footer-select'>
-	  		<a href=${baseHost}>
+	  		<a href=${baseHost}#>
 			  	<i class='icon-shouye'></i>
 			  	<p>首页</p>
 			</a>

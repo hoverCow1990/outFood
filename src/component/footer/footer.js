@@ -5,9 +5,9 @@ var Footer = Backbone.View.extend({
   		var data = { };  
 		return juicer(footerTemplate, data);
   	},
-	render : function($dom){  
+	render : function(){  
 	    this.el.innerHTML = this.template();
-	    $dom.append(this.el);  
+	    $('#footer').append(this.el);  
 	},
 });  
 

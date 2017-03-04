@@ -1,6 +1,6 @@
 import requestUrl from './requestUrl';
 import ShopList from '../component/shopList/shopList';
-import shopListData from '../store/shopList';
+import shopListData from '../store/ShopListData';
 import adminDetail from '../store/adminDetail';
 
 
@@ -18,10 +18,12 @@ function requestShopList(start,end,cb){
 		},
 		dataType : 'json',
 		success: function(data){
-			data.forEach(function(item){
-				shopListData.add(JSON.parse(item));
-			})
-			ShopList.render();
+			var state = shopListData.toJSON(),
+				data = data.map(function(item){
+					return JSON.parse(item);
+				}),
+				state = state.concat(data);
+			shopListData.reset(state);
 			cb && cb();
 		},
 		error:function(err){

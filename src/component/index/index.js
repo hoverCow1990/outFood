@@ -19,10 +19,10 @@ var Index = Backbone.View.extend({
   		var data = { };  
 		return juicer(indexTemplate, data);
   	},
-	render : function($dom){  
+	render : function(){  
 	    this.el.innerHTML = this.template();
-	    $dom.text('')
-	    $dom.append(this.el);  
+	    $('#app').text('')
+	    $('#app').append(this.el);  
 	    this.initEvents();
 	},
 	initEvents : function(){

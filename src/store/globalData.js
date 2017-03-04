@@ -1,5 +1,5 @@
 var globalData = new Backbone.Model({
-	routerId : null,
+	routerId : '',
 });
 
 export default globalData;

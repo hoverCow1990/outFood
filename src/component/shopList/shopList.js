@@ -1,56 +1,116 @@
 import shopListTemplate from './shopListTemplate';
 import {requestShopList} from '../../requestApi/requestApi';
-import shopListData from '../../store/shopList';
+import shopListData from '../../store/ShopListData';
 import globalData from '../../store/globalData';
+
+ /*
+ *  商铺列表页
+ *	渲染ShopList,在首页index以及shopList下均有显示
+ *  作者:hoverCow,日期:2017-03-02
+ */
 
 var ShopList = Backbone.View.extend({  
 	tagName : 'div',  
 	className : 'outFood-storeList',
+	//ShopList内事件
 	events :{
- 		'click  .sort-btn' : 'handlerSort',
+ 		'touchstart  .sort-btn' : 'handlerSort', 	//处理销量或者热度排序的事件
 	},
+	//初始化
 	initialize : function(){
-		this.initState();
+		this.loading = false;
+		this.count = 0;
 	},
+	//将loading以及count转初始状态
+	initState(){
+		this.loading = false;
+		this.count = 0;
+		shopListData.reset([],{silent : true});
+		this.handlerRequest($('#shopList-container'));
+	},
+	//模板数据信息
 	templateData : {
-		id : '',
-		list : [],
-		isFixed : false,
-		ColumnTitle : {
-			cn : '',
-			english : '',
-		},
-		sortTab : [
-			{
-				inner : '销量最高',
-				ev : "sales",
-				active : false,
-			},
-			{
-				inner : '评分最高',
-				ev : "stars",
-				active : false,
-			},
-			{
-				inner : '速度最快',
-				ev : "time",
-				active : false,
-			},
-			{
-				inner : '起送最低',
-				ev : "express",
-				active : false,
-			},
-		],
+		id : '',														//根据routerId匹配渲染不同的信息
+		list : [],														//最后将请求后在数据层shopListData内获取
+		ColumnTitle : {cn : '',english : ''},							//ColumnTitle的头部标题渲染信息,根据id匹配
+		sortTab : [ {inner : '销量最高',ev : "sales",active : false},	//active控制红色高亮,ev控制点击后时间,inner则为渲染数据
+					{inner : '评分最高',ev : "stars",active : false},
+					{inner : '速度最快',ev : "time",active : false},
+					{inner : '起送最低',ev : "express",active : false}]
 	},
+	//模板
   	template: function(){
   		var id = globalData.get('routerId');
   		this.templateData.id = id;
-  		this.templateData.list = shopListData.toJSON();
-  		this.templateData.ColumnTitle = this.handerColumnTitle(id);
+  		this.templateData.list = shopListData.toJSON();					//在stroe内的shopListData
+  		this.templateData.ColumnTitle = this.handerColumnTitle(id);		//利用函数handerColumnTitle返回不同的头部信息
 		return juicer(shopListTemplate,this.templateData);
   	},
-  	handerColumnTitle : function(id){
+  	//模板渲染$('#app-Wrapper')为shopList路由内渲染,
+  	//首页页面则装在一个$('#shopList-container')内
+	render : function(){
+		if(!shopListData.length) return;				//避免没有数据的时候渲染
+		var $dom = globalData.get('routerId')?$('#app'):$('#shopList-container');
+		this.el.innerHTML = this.template();
+	    $dom.text('');
+	    $dom.append(this.el);
+	    this.initEvents($dom);
+	    this.delegateEvents();  	//渲染后需要重新激活按键事件
+	},
+	initEvents($box){
+		var $listDom = globalData.get('routerId')?$('.outFood-storeList'):$('#index'),
+			loadingHeight = this.getLoadingHeight($listDom),
+			loadingSwitch = true,
+			self = this,
+			scrollTop;
+		$listDom.off('touchmove.shopList').on('touchmove.shopList',function(){
+			scrollTop = -1*this.getBoundingClientRect().top;
+			if(scrollTop > loadingHeight && loadingSwitch){
+				loadingSwitch = false;
+				self.handlerRequest($box,function(){
+					loadingHeight = self.getLoadingHeight($listDom);
+					loadingSwitch = true;
+				});
+			}
+		});
+	},
+	getLoadingHeight : function($dom){
+		return $dom.height() - $(window).height() - 50;
+	},
+	//进行请求数据,shopList初始申请5条数据,之后到达一定高度后继续往后申请
+	handlerRequest : function($dom){
+		if (!$dom.length){
+			$dom = $('<div id= "shopList-container"></div>');
+			$('#app').append($dom);
+		}	
+		if(this.count >= 3) return;
+		var start = (this.count++)*5,
+			end = start + 5,
+			self = this;
+		requestShopList(start,end);
+	},
+	//排序函数,点击排序tab按键后根据data-ev事件对store内的数据从新排序
+	handlerSort : function(e){	
+		var dom = e.target,
+			$dom = dom.tagName === 'SPAN'?$(dom).parent():$(dom),
+			tag = $dom.data('ev'),
+			index = $dom.index(),
+			sortTab = this.templateData.sortTab;
+		var array = shopListData.sortBy(function(item){
+			return item.get(tag);
+		})
+		if(tag === 'sales' || tag === 'stars') array.reverse();
+		sortTab = sortTab.map(function(item,i){
+			if(index == i){
+				item.active = true;
+			}else{
+				item.active = false;
+			}
+			return item;
+		})
+		shopListData.reset(array);
+	},
+	handerColumnTitle : function(id){
   		switch (id){
   			case 'delicious':
   				return {cn:'推荐美食',english:'Recommended food'};
@@ -71,52 +131,10 @@ var ShopList = Backbone.View.extend({
   			default :
   				return {cn:'附近美食',english:'Nearby diet'};
   		}
-  	},
-	render : function(){
-		var $dom = globalData.get('routerId')?$('#app-Wrapper'):$('#shopList-container');
-		this.el.innerHTML = this.template();
-	    $dom.text('');
-	    $dom.append(this.el);
-	    this.delegateEvents()  
-	},
-	initState(){
-		this.loading = false;
-		this.count = 0;
-	},
-	getTop : function(){
-		return this.$el.find('.storeList-wrapper').offset().top;
-	},
-	handlerRequest : function($dom,cb){
-		if (!$dom.length){
-			$dom = $('<div id= "shopList-container"></div>')
-			$('#app-Wrapper').append($dom);
-		}	
-		if(this.count >= 3) return;
-		var start = (this.count++)*5,
-			end = start + 5,
-			self = this;
-		requestShopList(start,end,cb);
-	},
-	handlerSort : function(e){	
-		var dom = e.target,
-			$dom = dom.tagName === 'SPAN'?$(dom).parent():$(dom),
-			tag = $dom.data('ev'),
-			index = $dom.index(),
-			sortTab = this.templateData.sortTab;
-		var array = shopListData.sortBy(function(item){
-			return item.get(tag);
-		})
-		if(tag === 'sales' || tag === 'stars') array.reverse();
-		sortTab = sortTab.map(function(item,i){
-			if(index == i){
-				item.active = true;
-			}else{
-				item.active = false;
-			}
-			return item;
-		})
-		shopListData.reset(array);
-	}
+  	}
 });  
 
 export default new ShopList(); 
+
+
+
