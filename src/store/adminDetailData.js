@@ -1,4 +1,8 @@
-var adminDetailData = new Backbone.Model({});
+var adminDetailData = Backbone.Model.extend({
+	defaults : {
+		orderList : [],
+	}
+});
 
 
-export default adminDetailData;
+export default new adminDetailData();

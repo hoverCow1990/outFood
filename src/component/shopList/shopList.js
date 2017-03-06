@@ -2,6 +2,7 @@ import shopListTemplate from './shopListTemplate';
 import {requestShopList} from '../../requestApi/requestApi';
 import shopListData from '../../store/ShopListData';
 import globalData from '../../store/globalData';
+import adminDetailData from '../../store/adminDetailData';
 
  /*
  *  商铺列表页
@@ -52,7 +53,8 @@ var ShopList = Backbone.View.extend({
 		sortTab : [ {inner : '销量最高',ev : "sales",active : false},	//active控制红色高亮,ev控制点击后时间,inner则为渲染数据
 					{inner : '评分最高',ev : "stars",active : false},
 					{inner : '速度最快',ev : "time",active : false},
-					{inner : '起送最低',ev : "start",active : false}]
+					{inner : '起送最低',ev : "start",active : false}],
+		orderList : []
 	},
 	//模板
   	template: function(){
@@ -60,6 +62,7 @@ var ShopList = Backbone.View.extend({
   		this.templateData.id = id;
   		this.templateData.list = shopListData.toJSON();					//在stroe内的shopListData
   		this.templateData.ColumnTitle = this.handerColumnTitle(id);		//利用函数handerColumnTitle返回不同的头部信息
+  		this.templateData.orderList = adminDetailData.get('orderList');
 		return juicer(shopListTemplate,this.templateData);
   	},
   	//模板渲染$('#app-Wrapper')为shopList路由内渲染,

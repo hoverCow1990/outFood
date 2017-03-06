@@ -1,11 +1,14 @@
 import Index from '../component/index/index';
 import Header from '../component/header/header';
 import ShopList from '../component/shopList/shopList';
+import ShopDetail from '../component/shopDetail/shopDetail';
+import ShopMenu from '../component/shopDetail/shopMenu';
 import Footer from '../component/footer/footer';
 import AdminDetail from '../component/adminDetail/adminDetail';
 import globalData from '../store/globalData';
 import shopListData from '../store/ShopListData';
 import adminDetailData from '../store/adminDetailData';
+import shopDetailData from '../store/shopDetailData';
 
 //修改据juicer的内置变量符号(encode类型)
 //原本为${}由于使用``避免与原语法冲突修改为%{}
@@ -39,25 +42,39 @@ var indexShow = {
  * 商店列表
  */
 
-var shopListShow = $.extend({},indexShow,{
+var shopListShow = {
 	init : function(){
 		Header.render();
 		Footer.render()
 		ShopList.initState();
 	},
-})
+}
 
 /* 
  * 用户列表
  */
 
-var adminDetailShow = $.extend({},indexShow,{
+var adminDetailShow = {
 	init : function(){
 		Header.render();
 		Footer.render();
 		AdminDetail.render();
 	},
-})
+}
+
+/* 
+ * 用户列表
+ */
+
+var shopDetailShow = {
+	init : function(id){
+		Header.render();
+		//Footer.render();
+		ShopDetail.initState(Number(id));
+		// ShopDetail.render();
+		// ShopDetail.initState();
+	},
+}
 
 
 /*
@@ -67,9 +84,10 @@ var adminDetailShow = $.extend({},indexShow,{
 
 var AppRouter = Backbone.Router.extend({
   routes: {
-  	""  : 'index',					// 首页
-  	"shopList/:query":"shopList",   // 店铺列表页
-  	"adminDetail" : "adminDetail"	// 用户详情页
+  	""  : 'index',						// 首页
+  	"shopList/:query":"shopList",   	// 店铺列表页
+  	"adminDetail" : "adminDetail",		// 用户详情页
+  	"shopDetail/:query" : "shopDetail"	// 商铺详情页
   }
 });
 // 实例化 Router
@@ -89,6 +107,12 @@ app_router.on('route:adminDetail', function(){
 app_router.on('route:shopList',function(id){
 	globalData.set({routerId:id});
 	shopListShow.init.call(shopListShow);
+});
+
+//店铺列表页页面
+app_router.on('route:shopDetail',function(id){
+	globalData.set({routerId:id});
+	shopDetailShow.init.call(shopDetailShow,id);
 });
 
 Backbone.history.start();
@@ -114,6 +138,21 @@ adminDetailData.on('change:adress',function(){
 })
 
 adminDetailData.on('change',function(){
-	if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
+	if(globalData.get('routerId') === 'adminDetail'){
+		AdminDetail.render();
+	}
 })
 
+/*
+ * shopDetailData数据发生变化时对shopDetail页面渲染
+ * 作者:hoverCow,日期:2017-03-05
+ */
+shopDetailData.on('add',function(){
+	//console.log(shopDetailData);
+	ShopDetail.state = this.last().attributes;
+	ShopDetail.render();
+})
+
+shopDetailData.on('change:pageTab',function(a,b){
+	console.log(b);
+})

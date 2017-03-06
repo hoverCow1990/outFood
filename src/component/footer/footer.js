@@ -7,7 +7,7 @@ var Footer = Backbone.View.extend({
   	},
 	render : function(){  
 	    this.el.innerHTML = this.template();
-	    $('#footer').append(this.el);  
+	    $('#footer').text('').append(this.el);  
 	},
 });  
 

@@ -5,21 +5,21 @@ var HeaderTemplate = `
 	  <div class="header-info weui-flex__item">
 	  	<div class='footer-select'>
 	  		<a href=${baseHost}#>
-			  	<i class='icon-shouye'></i>
+			  	<i class='icon-shouye footer-icon'></i>
 			  	<p>首页</p>
 			</a>
 		</div>
 	  </div>
 	  <div class="header-search weui-flex__item">
 	  	<div class='footer-select'>
-		  	<i class='icon-wodedingdan'></i>
+		  	<i class='icon-wodedingdan footer-icon'></i>
 		  	<p>订单</p>
 		</div>
 	  </div>
 	  <div class="header-search weui-flex__item">
 	  	<div class='footer-select'>
 	  		<a href=${baseHost}#/adminDetail>
-			  	<i class='icon-shezhi'></i>
+			  	<i class='icon-shezhi footer-icon'></i>
 			  	<p>信息</p>
 			</a>
 		</div>
