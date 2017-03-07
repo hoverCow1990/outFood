@@ -19,7 +19,7 @@ var ShopList = Backbone.View.extend({
 	},
 	//初始化
 	initialize : function(){
-		this.loading = false;
+		//this.loading = false;
 		this.hasData = true;
 		this.requestSwitch = true;
 		var tab = this.templateData.sortTab;
@@ -31,8 +31,8 @@ var ShopList = Backbone.View.extend({
 	},
 	//将loading以及count转初始状态
 	initState(){
-		this.loading = false;
-		this.requestSwitch = true;
+		//this.loading = false;
+		this.templateData.requestSwitch = true;
 		this.hasData = true;
 		this.count = 0;
 		var tab = this.templateData.sortTab;
@@ -47,7 +47,7 @@ var ShopList = Backbone.View.extend({
 	templateData : {
 		id : '',
 		hasData : true,													//根据routerId匹配渲染不同的信息
-		requestSwitch : this.requestSwitch,								//是否还有新的数据可以更新
+		requestSwitch : true,											//是否还有新的数据可以更新
 		list : [],														//最后将请求后在数据层shopListData内获取
 		ColumnTitle : {cn : '',english : ''},							//ColumnTitle的头部标题渲染信息,根据id匹配
 		sortTab : [ {inner : '销量最高',ev : "sales",active : false},	//active控制红色高亮,ev控制点击后时间,inner则为渲染数据
@@ -98,13 +98,14 @@ var ShopList = Backbone.View.extend({
 	},
 	//进行请求数据,shopList初始申请5条数据,之后到达一定高度后继续往后申请
 	handlerRequest : function($dom){
-		if(!this.requestSwitch) return;
+		if(!this.templateData.requestSwitch) return;
 		var start = (this.count++)*5,
 			id = globalData.get('routerId'),
 			tag = id === null?'all':id,
 			self = this;
 		requestShopList(start,tag,function(){
-			self.requestSwitch = false;
+			self.templateData.requestSwitch = false;
+			self.render();
 		});
 	},
 	//排序函数,点击排序tab按键后根据data-ev事件对store内的数据从新排序

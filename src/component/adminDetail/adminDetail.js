@@ -104,7 +104,8 @@ var adminDetail = Backbone.View.extend({
   handlerAdress : function(){
     var allAdress = adminDetailData.get('allAdress'),
         addressList = allAdress.map(function(item){return '<li><p>' + item + '</p><div class="radio"></div></li>'}).join(''),
-        text = '<div class="dialog-wrapper"><ul class="adressList">' + addressList + '</ul></div>';
+        text = '<div class="dialog-wrapper"><ul class="adressList">' + addressList + '</ul></div>',
+        self = this;
     $.confirm({
       title: '<p>用户地址</p><span class="addAdress">+ 新增</span>',
       text: text,
@@ -112,19 +113,31 @@ var adminDetail = Backbone.View.extend({
         var $lastLi = $adressList.find('li:last'),
             val;
         if($lastLi.hasClass('citySelect')){
-          var $input = $lastLi.find('input');
-              val = $input.val();
-          if(val < 4 || /^\d+/.test(val)) return $input.addClass('err'); //如果地址长度小于4或者全是数字则return
-          allAdress = allAdress.concat([val]);                           //重组地址数组,以供最后设置数据
+          var $input = $lastLi.find('input'),
+              myGeo = new BMap.Geocoder(),
+              address = $input.val();
+          val = $input.prev().val() +'区'+ $input.val();
+          if(!/^[^\d]+\d{1,4}[号弄]/.test(address)){
+            alert('请填写准确的几弄或者几号');
+            return $input.addClass('err');
+          }          
+          myGeo.getPoint(address, function(point){                      //谷歌地图查询地址如果返回null代表没有查询到目的地址
+            if(null === point){
+              alert('上海查询不到此地址')
+              return $input.addClass('err');
+            }else{
+              self.handlerAddAdress(val,allAdress.concat([val]));
+            }
+          },'上海市');
         }else{
           val = $adressList.find('.active').find('p').text();            //最后个li不是新增的则调用选中的li内的内容作为地址
+          if(!val) return $input.addClass('err');                        //避免没有选择且没有新增地址的情况
+          adminDetailData.set({                                            //修改数据层
+            adress:val,
+            allAdress : allAdress
+          });
+          $.closeModal(); //关闭弹窗
         }
-        if(!val) return;                                                 //避免没有选择且没有新增地址的情况
-        adminDetailData.set({                                            //修改数据层
-          adress:val,
-          allAdress : allAdress
-        });
-        $.closeModal(); //关闭弹窗
       },
       onCancel: function(){
         $.closeModal();
@@ -146,6 +159,13 @@ var adminDetail = Backbone.View.extend({
           $startLi.removeClass('active');
       })
     })
+  },
+  handlerAddAdress : function(val,allAdress){
+    adminDetailData.set({                                            //修改数据层
+      adress:val,
+      allAdress : allAdress
+    });
+    $.closeModal();
   },
   handlerStore : function(){
     window.location = baseHost + '#/shopList/love';

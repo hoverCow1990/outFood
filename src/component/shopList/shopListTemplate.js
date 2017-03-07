@@ -61,11 +61,10 @@ var shopListTemplate = `
   {@/if}  
   <div class="weui-loadmore loadding-box">
     <img src='../images/icon/loading.gif'>
-    <span class="weui-loadmore__tips">{@if requestSwitch}玩命加载 ...{@else}已全部加载{@/if}</span>
+    <span class="weui-loadmore__tips"><%= requestSwitch?'玩命加载 ...':'已全部加载!' =></span>
   </div>
 </div>
 `
-
 juicer.register('getStar',function(num){
   var str = '',
       num = Math.min(Math.floor(num/500),5);

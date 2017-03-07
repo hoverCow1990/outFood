@@ -1,7 +1,10 @@
 import shopDetailTemplate from './shopDetailTemplate';
 import shopDetailData from '../../store/shopDetailData';
 import globalData from '../../store/globalData';
-import ShopMenu from './ShopMenu';
+import ShopMenu from './shopMenu';
+import ShopInfo from './shopInfo';
+import ShopTraffic from './ShopTraffic';
+import Footer from '../footer/footer';
 import {requestshopDetail} from '../../requestApi/requestApi';
 import {baseHost} from '../../defaultConfig/config';
 
@@ -18,13 +21,24 @@ var shopDetail = Backbone.View.extend({
     'touchstart .shopDetail-pageTab' : 'handlerPageTab'
   },
   state : {
-    
+    id : null,
   },
   initState : function(id){
+    this.state.id = id;
     if(shopDetailData.has(id)){
-      this.state = shopDetailData.get(id).attributes;
+      var data = shopDetailData.get(id),
+          state = data.attributes,
+          menu = state.menu,
+          newMenu = Array.prototype.slice.call(menu),
+          newState;
+      newMenu = newMenu.sort(function(a,b){
+        return b.num - a.num;
+      })
+      newState = $.extend({},state,{menu : newMenu});
+      data.set({menu : newMenu},{silent:true});
+      this.state = state;
       this.render();
-      this.renderPage(this.state.pageTab,id);
+      this.renderPage(this.state.pageTab);
       return;
     }
     this.handlerRequest(id);
@@ -56,13 +70,24 @@ var shopDetail = Backbone.View.extend({
   },
   //处理点击tabLi后的事件
   handlerPageTab : function(e){
-   shopDetailData.set({'pageTab':$(e.target).index()});
-   //this.render();
+    var data = shopDetailData.get(this.state.id),
+        index = $(e.target).index(),
+        lastIndex = data.get('pageTab');
+    if(index === lastIndex) return;
+    data.set({'pageTab' : index});
   },
-  renderPage : function(num,id){
-    switch(num){
+  renderPage : function(pageTab){
+    switch(pageTab){
       case 0:
-        ShopMenu.initState(id,false);
+        ShopMenu.initState(this.state.id,false);
+        break;
+      case 1:
+        ShopInfo.initState(this.state.id);
+        Footer.render();
+        break;
+      case 2:
+        ShopTraffic.initState(this.state.id);
+        Footer.render();
         break;
     }
   }

@@ -75,7 +75,9 @@ function requestshopDetail(id,cb){
 		},
 		success: function(data){
 			data.menu = data.menu.map(function(item){
-				return JSON.parse(item);
+				item = JSON.parse(item);
+				item.num = 0;
+				return item;
 			})
 			data = $.extend(data,{pageTab:0,tabInfo : ['点餐','详情','交通'],packageList : [],payment : 0});
 			shopDetailData.add(data);

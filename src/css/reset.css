@@ -16,7 +16,10 @@ body{
   -webkit-overflow-scrolling: touch;/* 开启手机端moblie网页快速滚动和回弹的效果 */
 }
 html{
-   font-size:625%;
+  position:relative;
+  font-size:625%;
+  max-width: 435px;
+  overflow-x: hidden;
 }
 a{
   color: #333;
@@ -59,10 +62,11 @@ i{
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media screen and (min-width:450px){
+@media screen and (min-width:500px){
 	html{
 		width:435px;
-		margin:100px auto;
+    height:736px;
+		margin:0px auto;
 	}
 }
 

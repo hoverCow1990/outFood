@@ -76,7 +76,7 @@ var ShopMenu = Backbone.View.extend({
           attrB = {width: 0,height:0,left:tx,top:ty};
         }else{
           attrA = {left : tx,top:ty};
-          attrB = {width: 0,height:0,left:-30,top:ty-50};
+          attrB = {width: 0,height:0,left:-30,top:ty - 80};
         }
         $('<div class="playBall"></div>').appendTo($('body')).css(attrA).animate(attrB,600,function(){
           $(this).remove();
@@ -90,25 +90,20 @@ var ShopMenu = Backbone.View.extend({
   //选择增加这个产品
   handlerNum : function(e){
     var $dom = $(e.target),
-        index = $dom.parent().data('index'),
+        id = $dom.parent().data('id'),
         module = shopDetailData.get(this.state.id),
-        menu = module.get('menu'),
-        lastNum = menu[index].num,
-        lastPackageList = module.get('packageList'),
-        newMenu =  Array.prototype.slice.call(menu),
-        obj = newMenu[index],
-        newNum;
-    if($dom.hasClass('add')){
-      newNum = void 0 === lastNum?1:++lastNum;
-    }else{
-      newNum = 1 === lastNum?null:--lastNum;
-    }
-    obj = $.extend({},obj,{num:newNum});
-    newMenu[index] = obj;
-    this.state.playBall = [e.touches[0].clientX,e.touches[0].clientY]
-    module.set({
-      menu:newMenu,
+        menu = Array.prototype.slice.call(module.get('menu')),
+        index,data,num;
+    index = _.findIndex(menu,function(item){
+       return item.id === id;
     });
+    data = menu[index];
+    num = data.num;
+    num = $dom.hasClass('add')? ++num: --num;
+    data = $.extend({},data,{num:num});
+    menu[index] = data;
+    this.state.playBall = [e.touches[0].clientX,e.touches[0].clientY]
+    module.set({menu:menu});
   }
 });  
 

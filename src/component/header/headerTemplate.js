@@ -1,7 +1,11 @@
+import {baseHost} from '../../defaultConfig/config';
+
 var HeaderTemplate = `
   <div class="header-info weui-flex__item">
-    <input class='info' readonly="readonly" value="<%= adress =>"/>
-    <i class='icon-shouhuodizhi'></i>
+    <a href=${baseHost}#/adminDetail >
+      <input class='info' readonly="readonly" value="<%= adress.replace(/.+区/,'') =>"/>
+      <i class='icon-shouhuodizhi'></i>
+    </a>
   </div>
   <div class="header-search weui-flex__item">
   	<div class='search-group'>

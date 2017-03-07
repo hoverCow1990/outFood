@@ -15,8 +15,8 @@ var ShopMenuTemplate = `
 					<p><span><%= item.value =></span>元/份</p>
 				</div>
 				<div class='consume-select'>
-					<div class='select-box' data-index='<%= index =>'>
-						{@if void 0 != item.num}
+					<div class='select-box' data-id='<%= item.id =>'>
+						{@if item.num>0}
 							<div class='select plus'>-</div>
 							<span class='active'><%= item.num =></span>
 						{@/if}

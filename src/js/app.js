@@ -148,11 +148,10 @@ adminDetailData.on('change',function(){
  * 作者:hoverCow,日期:2017-03-05
  */
 shopDetailData.on('add',function(){
-	//console.log(shopDetailData);
 	ShopDetail.state = this.last().attributes;
 	ShopDetail.render();
 })
 
-shopDetailData.on('change:pageTab',function(a,b){
-	console.log(b);
+shopDetailData.on('change:pageTab',function(){
+	ShopDetail.initState(ShopDetail.state.id);
 })

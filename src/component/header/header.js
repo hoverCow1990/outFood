@@ -64,7 +64,9 @@ var Header = Backbone.View.extend({
 			$sub.removeClass('active');
 		}
 	},
-	handerSubmit : function(){
+	handerSubmit : function(e){
+		e.preventDefault();
+       	e.stopPropagation();
 		var val = $('.search',this.$el).val();
 		window.location = baseHost + '#/shopList/' + val;
 	}

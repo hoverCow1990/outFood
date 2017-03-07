@@ -243,6 +243,108 @@
 			}
 		}
 	}
+	.page-info,
+	.page-traffic{
+		padding:10px 2% 40px 2%;
+	}
+	.info-score{
+		li{
+			display:flex;
+			align-items:center;
+			width:100%;
+			height:20px;
+			padding-top:6px;
+			padding-bottom:6px;
+			font-size:12px;
+			line-height:20px;
+			color:#777;
+			.score-line{
+				position:relative;
+				width:55%;
+				height:10px;
+				margin-left:10px;
+				background-color:#e6e6e6;
+				border-radius:3px;
+				overflow:hidden;
+				span{
+					display:block;
+					height:100%;
+					background-color:#ffbc2c; 
+				}
+			}
+			.score-num{
+				margin-left:10px;
+				letter-spacing:1px;
+			} 
+		}
+	}
+	.info-des{
+		font-size:12px;
+		line-height:20px;
+		color:#999;
+	}
+	.info-show{
+	    display: flex;
+    	justify-content: space-between;
+    	li{
+    		width: 1.1rem;
+    		height: 1.2rem;
+    		overflow:hidden;
+    		img{
+    			width:100%;
+    		}
+    	}	
+	}
+	.page-traffic{
+		.traffic-tab{
+			display: flex;
+		    width: 100%;
+		    height: 35px;
+		    font-size: 13px;
+		    div{
+		    	position: relative;
+			    flex: 1;
+			    text-align: center;
+			    color: #777;
+			    line-height: 35px;
+			    span{
+			    	display: block;
+				    position: absolute;
+				    width: 20px;
+				    height: 20px;
+				    top: 7px;
+				    left: .08rem;
+				    background-image: url(https://img.alicdn.com/imgextra/i3/700459267/TB2iTlrcp5N.eBjSZFKXXX_QVXa_!!700459267.png);
+				    background-size: cover;
+			    }
+			    &:nth-child(1) span{
+			    	background-position: -20px;
+			    }
+			    &:nth-child(2) span{
+			    	background-position: 0;
+			    }
+			    &:nth-child(3) span{
+			    	background-position: -40px;
+			    }
+		    }
+		}
+	}
+	#traffic-map{
+		width:100%;
+		height:250px;
+	}
+}
+
+
+.shopDetail-title{
+	width:100%;
+    padding-top:4px;
+    padding-bottom:4px;
+    margin-top:10px;
+    margin-bottom:10px;
+    font-size:16px;
+    text-indent:8px;
+    border-left:6px solid #222;
 }
 #footer{
 	.order-package{
@@ -320,7 +422,56 @@
 		}
 	}
 }
-
+#app{
+	#traffic-bus{
+		h1{
+			display:none;
+		}
+		table{
+			font-family:'Microsoft YaHei' !important;
+			letter-spacing:1px;
+			color:#999;
+			p{
+				color:#333;
+			}
+		}
+		.tranroute-plan-list.expand .trans-title{
+			border-bottom:none;
+    		background-color:#f9f9f9;
+		}
+		&>div>div{
+			opacity:0;
+		}
+	}
+}
+#app-mask{
+	position:fixed;
+	display:flex; 
+	width:100%; 
+	height: 100%;
+	top: 0px; 
+	left: 0px;  
+	justify-content:center;
+	align-items:center;
+	background-color: rgba(0, 0, 0, 0.9); 
+	z-index: 9999;
+	img{
+		width: 330px; 
+		height: 360px;
+		&.active{
+			transition:.2s;
+		}
+	}
+	#delete{
+		position: absolute; 
+		width:32px; 
+		height:32px; 
+		right:10px; 
+		top:10px; 
+		background:url(https://img.alicdn.com/imgextra/i1/700459267/TB2jqYzb9iJ.eBjSspiXXbqAFXa_!!700459267.png); 
+		z-index:99;
+	}
+}
 .playBall{
 	position:fixed;
 	width:20px;
@@ -328,6 +479,7 @@
 	border-radius:50%;
 	background-color:red; 
 }
+
 @media screen and (max-width:322px){
 	.shopDetail .hd-info{
     	ul{
