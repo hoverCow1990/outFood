@@ -42,7 +42,8 @@ var ShopMenu = Backbone.View.extend({
     this.state = {
       id : id,
       express : shopDetail.express,
-      menu :  menu,
+      logo : shopDetail.logo,
+      menu : menu,
       packageList : packageList,
       payment :  payment,
       allLength : allLength,

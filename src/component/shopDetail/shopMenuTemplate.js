@@ -3,7 +3,7 @@ var ShopMenuTemplate = `
 	{@each menu as item,index}
 	<li>
 		<div class='list-perviewer'>
-			<img src='http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/menuList/1.jpg' />
+			<img src='http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/<%= logo =>/c-<%= item.id =>.jpg' />
 		</div>
 		<div class='list-plane'>
 			<h4><%= item.name =></h4>

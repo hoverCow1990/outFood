@@ -19,23 +19,20 @@ var ShopList = Backbone.View.extend({
 	},
 	//初始化
 	initialize : function(){
-		//this.loading = false;
-		this.hasData = true;
-		this.requestSwitch = true;
-		var tab = this.templateData.sortTab;
+		this.state.requestSwitch = true;
+		this.state.count = 0;
+		var tab = this.state.sortTab;
 		tab = tab.map(function(item){
 			item.active = false;
 			return item;
 		})
-		this.count = 0;
+		shopListData.reset([],{silent : true});
 	},
 	//将loading以及count转初始状态
 	initState(){
-		//this.loading = false;
-		this.templateData.requestSwitch = true;
-		this.hasData = true;
-		this.count = 0;
-		var tab = this.templateData.sortTab;
+		this.state.requestSwitch = true;
+		this.state.count = 0;
+		var tab = this.state.sortTab;
 		tab = tab.map(function(item){
 			item.active = false;
 			return item;
@@ -44,10 +41,12 @@ var ShopList = Backbone.View.extend({
 		this.handlerRequest();
 	},
 	//模板数据信息
-	templateData : {
+	state : {
 		id : '',
+		count : 0,
 		hasData : true,													//根据routerId匹配渲染不同的信息
 		requestSwitch : true,											//是否还有新的数据可以更新
+		loadingSwitch : true,
 		list : [],														//最后将请求后在数据层shopListData内获取
 		ColumnTitle : {cn : '',english : ''},							//ColumnTitle的头部标题渲染信息,根据id匹配
 		sortTab : [ {inner : '销量最高',ev : "sales",active : false},	//active控制红色高亮,ev控制点击后时间,inner则为渲染数据
@@ -59,11 +58,11 @@ var ShopList = Backbone.View.extend({
 	//模板
   	template: function(){
   		var id = globalData.get('routerId');
-  		this.templateData.id = id;
-  		this.templateData.list = shopListData.toJSON();					//在stroe内的shopListData
-  		this.templateData.ColumnTitle = this.handerColumnTitle(id);		//利用函数handerColumnTitle返回不同的头部信息
-  		this.templateData.orderList = adminDetailData.get('orderList');
-		return juicer(shopListTemplate,this.templateData);
+  		this.state.id = id;
+  		this.state.list = shopListData.toJSON();					//在stroe内的shopListData
+  		this.state.ColumnTitle = this.handerColumnTitle(id);		//利用函数handerColumnTitle返回不同的头部信息
+  		this.state.orderList = adminDetailData.get('orderList');
+		return juicer(shopListTemplate,this.state);
   	},
   	//模板渲染$('#app-Wrapper')为shopList路由内渲染,
   	//首页页面则装在一个$('#shopList-container')内
@@ -74,21 +73,21 @@ var ShopList = Backbone.View.extend({
 	    $dom.text('');
 	    $dom.append(this.el);
 	    this.initEvents($dom);
-	    this.delegateEvents();  	//渲染后需要重新激活按键事件
+	    this.delegateEvents();  	
 	},
 	initEvents($box){
 		var $listDom = globalData.get('routerId')?$('.outFood-storeList'):$('#index'),
 			loadingHeight = this.getLoadingHeight($listDom),
-			loadingSwitch = true,
 			self = this,
 			scrollTop;
+		this.state.loadingSwitch = true;
 		$listDom.off('touchmove.shopList').on('touchmove.shopList',function(){
 			scrollTop = -1*this.getBoundingClientRect().top;
-			if(scrollTop > loadingHeight && loadingSwitch){
-				loadingSwitch = false;
+			if(scrollTop > loadingHeight && self.state.loadingSwitch){
+				self.state.loadingSwitch = false;
 				self.handlerRequest($box,function(){
 					loadingHeight = self.getLoadingHeight($listDom);
-					loadingSwitch = true;
+					self.state.loadingSwitch = true;
 				});
 			}
 		});
@@ -98,13 +97,13 @@ var ShopList = Backbone.View.extend({
 	},
 	//进行请求数据,shopList初始申请5条数据,之后到达一定高度后继续往后申请
 	handlerRequest : function($dom){
-		if(!this.templateData.requestSwitch) return;
-		var start = (this.count++)*5,
+		if(!this.state.requestSwitch) return;
+		var start = (this.state.count++)*5,
 			id = globalData.get('routerId'),
 			tag = id === null?'all':id,
 			self = this;
 		requestShopList(start,tag,function(){
-			self.templateData.requestSwitch = false;
+			self.state.requestSwitch = false;
 			self.render();
 		});
 	},
@@ -114,7 +113,7 @@ var ShopList = Backbone.View.extend({
 			$dom = dom.tagName === 'SPAN'?$(dom).parent():$(dom),
 			tag = $dom.data('ev'),
 			index = $dom.index(),
-			sortTab = this.templateData.sortTab;
+			sortTab = this.state.sortTab;
 		var array = shopListData.sortBy(function(item){
 			return item.get(tag);
 		})
@@ -129,6 +128,7 @@ var ShopList = Backbone.View.extend({
 		})
 		shopListData.reset(array);
 	},
+	//根据当前路由的id返回不同的头部！
 	handerColumnTitle : function(id){
   		switch (id){
   			case null :

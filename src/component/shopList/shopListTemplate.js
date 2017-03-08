@@ -18,18 +18,17 @@ var shopListTemplate = `
     </div>
     {@/each}  
   </div>
-  <div class='storeList-lattice'></div>
   {@if hasData}
   <ul class='menu-list'>
     {@each list as item}  
     <li>
-      <a href=${baseHost}#/shopDetail/<%= item.id =>>
         <div class="store-container outFood-container">
+          <a href=${baseHost}#/shopDetail/<%= item.id =>>
             <div class="store-perview">
               <img src=<%= item.logo|getUrl, "","/logo" => alt=""/>
             </div>
             <div class="store-info">
-              <div class='info-title'><p><%= item.name =></p><span>1.4km</span></div>
+              <div class='info-title'><p><%= item.name =></p><span><%= item.distance =>km</span></div>
               <div class='info-tag'>
                 <div class='tag-lt'>
                   <div class='tag-star'>
@@ -37,7 +36,7 @@ var shopListTemplate = `
                   </div>
                   <div class='tag-sales'>月销:<span><%= item.sales =></span>单</div>
                 </div>
-                <div class='tag-gt tag-time'><span><%= item.time =></span>分钟</div>
+                <div class='tag-gt tag-time'><span><%= item.time*2 + item.trafficTime =></span>分钟</div>
               </div>
               <div class='info-price clearfix'>
                 <div class='info-start'>起送价:<span><%= item.start =></span></div>
@@ -48,11 +47,11 @@ var shopListTemplate = `
                 <span><%= item.tele =></span>
               </div>
             </div>
+          </a>
         </div>
         {@if orderList[item.id] >0}
           <span class="orderList-tip"><%= orderList[item.id] =></span>
         {@/if}
-      </a>
     </li>
     {@/each}  
   </ul>

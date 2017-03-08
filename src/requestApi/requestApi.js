@@ -3,7 +3,7 @@ import ShopList from '../component/shopList/shopList';
 import shopListData from '../store/ShopListData';
 import adminDetailData from '../store/adminDetailData';
 import shopDetailData from '../store/shopDetailData';
-
+import distanceQuery from '../lib/distanceQuery';
 
 /* 请求shopList
  * data为请求数组的起始点,end为请求数据的结束点
@@ -24,18 +24,20 @@ function requestShopList(start,tag,cb){
 				return;
 			}
 			if(data[0].id == -1){
-				ShopList.templateData.hasData = false;
+				ShopList.state.hasData = false;
 				shopListData.reset({});
 				return;
 			}
-			ShopList.templateData.hasData = true;
-			var state = shopListData.toJSON(),
+			ShopList.state.hasData = true;
+			distanceQuery.getDistance(data,adminDetailData.get('adminPoints'),function(data){
+				var state = shopListData.toJSON(),
 				data = data.map(function(item){
 					return item;
 				}),
 				state = state.concat(data);
-			if(!state[0].hasOwnProperty('id')) state.shift();
-			shopListData.reset(state);
+				if(!state[0].hasOwnProperty('id')) state.shift();
+				shopListData.reset(state);
+			});
 		},
 		error:function(err){
 			shopListData.reset({});
@@ -52,8 +54,11 @@ function requestadminDetail(cb){
 		type : 'post',
 		dataType : 'json',
 		success: function(data){
-			adminDetailData.set(JSON.parse(data[0]));
-			cb && cb();
+			distanceQuery.getPoints(data.adress,function(point){
+				data.adminPoints = point;
+				adminDetailData.set(data);
+				cb && cb();
+			})
 		},
 		error:function(err){
 			console.log(err)

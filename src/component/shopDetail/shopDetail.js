@@ -37,8 +37,9 @@ var shopDetail = Backbone.View.extend({
       newState = $.extend({},state,{menu : newMenu});
       data.set({menu : newMenu},{silent:true});
       this.state = state;
+      this.state.id = id;
       this.render();
-      this.renderPage(this.state.pageTab);
+      this.renderPage(0);
       return;
     }
     this.handlerRequest(id);

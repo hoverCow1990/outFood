@@ -22,8 +22,11 @@ var CowMap = (function(a,fn){
 			var This = this;
 			if(typeof(points) === 'string'){
 				this.requestPoints(points,map,attr,cb);
-			}else{
+			}else if(points instanceof BMap.Point){
 				this[attr] = points;
+				cb && cb();
+			}else{
+				this[attr] = new BMap.Point(points[0],points[1]);
 				cb && cb();
 			};
 		},
@@ -189,4 +192,5 @@ var CowMap = (function(a,fn){
 	Route.prototype.fn.getId = Map.prototype.fn.getId;
 	return new Map();
 });
+
 export default CowMap;

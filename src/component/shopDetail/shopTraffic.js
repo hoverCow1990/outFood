@@ -17,13 +17,13 @@ var ShopTraffic = Backbone.View.extend({
 	},
   state : {
     map : null,
-    adminAdress : '',
-    shopAdress : '',
+    adminPoints : null,
+    shopPoints : null,
   },
   initState : function(id,bool){
     var shopDetail  = shopDetailData.get(id).attributes;
-    this.state.shopAdress = shopDetail.address;
-    this.state.adminAdress = adminDetailData.get('adress');
+    this.state.shopPoints = shopDetail.address;
+    this.state.adminPoints = adminDetailData.get('adminPoints') || adminDetailData.get('adress');
     this.render();
   },
   //渲染
@@ -39,8 +39,8 @@ var ShopTraffic = Backbone.View.extend({
   },
   handlerMap : function(){
     var config = $.extend({},trafficConfig,{
-      shopPoints : this.state.shopAdress,
-      userPoints : this.state.adminAdress,  
+      shopPoints : this.state.shopPoints,
+      userPoints : this.state.adminPoints,  
     });
     CowMap.init(config);
   }, 

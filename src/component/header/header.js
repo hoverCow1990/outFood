@@ -29,6 +29,7 @@ var Header = Backbone.View.extend({
   	},
   	//渲染头部
 	render : function(){ 
+		if(void 0 === adminDetailData.get('name')) return;
 		var $dom = $('#header');
 	    this.el.innerHTML = this.template();
 	    $dom.append(this.el);  
