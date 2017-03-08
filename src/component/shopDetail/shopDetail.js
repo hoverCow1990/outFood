@@ -10,11 +10,11 @@ import {baseHost} from '../../defaultConfig/config';
 
  /*
  *  商铺详情页
- *  渲染ShopList,在首页index以及shopList下均有显示
+ *  渲染shopDetail,在首页index以及shopList下均有显示
  *  作者:hoverCow,日期:2017-03-04
  */
 
-var shopDetail = Backbone.View.extend({  
+var ShopDetail = Backbone.View.extend({  
   tagName : 'div',  
   className : 'shopDetail',
   events :{
@@ -39,7 +39,7 @@ var shopDetail = Backbone.View.extend({
       this.state = state;
       this.state.id = id;
       this.render();
-      this.renderPage(0);
+      this.renderPage(this.state.pageTab);
       return;
     }
     this.handlerRequest(id);
@@ -94,4 +94,4 @@ var shopDetail = Backbone.View.extend({
   }
 });  
 
-export default new shopDetail(); 
+export default new ShopDetail(); 

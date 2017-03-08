@@ -20,13 +20,13 @@ var ShopList = Backbone.View.extend({
 	//初始化
 	initialize : function(){
 		this.state.requestSwitch = true;
-		this.state.count = 0;
+		//this.state.count = 0;
 		var tab = this.state.sortTab;
 		tab = tab.map(function(item){
 			item.active = false;
 			return item;
 		})
-		shopListData.reset([],{silent : true});
+		//shopListData.reset([],{silent : true});
 	},
 	//将loading以及count转初始状态
 	initState(){
@@ -97,9 +97,9 @@ var ShopList = Backbone.View.extend({
 	},
 	//进行请求数据,shopList初始申请5条数据,之后到达一定高度后继续往后申请
 	handlerRequest : function($dom){
-		if(!this.state.requestSwitch) return;
+		var id = globalData.get('routerId');
+		if(!this.state.requestSwitch || id === 'adminDetail') return;
 		var start = (this.state.count++)*5,
-			id = globalData.get('routerId'),
 			tag = id === null?'all':id,
 			self = this;
 		requestShopList(start,tag,function(){

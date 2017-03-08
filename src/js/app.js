@@ -3,8 +3,8 @@ import Header from '../component/header/header';
 import ShopList from '../component/shopList/shopList';
 import ShopDetail from '../component/shopDetail/shopDetail';
 import ShopMenu from '../component/shopDetail/shopMenu';
-import Footer from '../component/footer/footer';
 import AdminDetail from '../component/adminDetail/adminDetail';
+import Footer from '../component/footer/footer';
 import globalData from '../store/globalData';
 import shopListData from '../store/ShopListData';
 import adminDetailData from '../store/adminDetailData';
@@ -22,63 +22,6 @@ juicer.set({
 //关闭模态框点击既关闭的设置
 $.modal.prototype.defaults.autoClose = false;
 
- /*
- *  App首页展示
- *	渲染Header,Index,ShopList
- *  作者:hoverCow,日期:2017-03-01
- */
-
-var indexShow = {
-	init : function(){
-		Header.render();
-		Index.render();
-		Footer.render();
-		if(void 0 === adminDetailData.get('adminPoints')) return;
-		ShopList.initialize();
-		ShopList.handlerRequest();
-		ShopList.render();
-	}
-}
-
-/* 
- * 商店列表
- */
-
-var shopListShow = {
-	init : function(){
-		Header.render();
-		Footer.render()
-		ShopList.initState();
-	},
-}
-
-/* 
- * 用户列表
- */
-
-var adminDetailShow = {
-	init : function(){
-		Header.render();
-		Footer.render();
-		AdminDetail.render();
-	},
-}
-
-/* 
- * 用户列表
- */
-
-var shopDetailShow = {
-	init : function(id){
-		Header.render();
-		//Footer.render();
-		ShopDetail.initState(Number(id));
-		// ShopDetail.render();
-		// ShopDetail.initState();
-	},
-}
-
-
 /*
  * app路由机制
  * 键他
@@ -92,29 +35,85 @@ var AppRouter = Backbone.Router.extend({
   	"shopDetail/:query" : "shopDetail"	// 商铺详情页
   }
 });
+
 // 实例化 Router
 var app_router = new AppRouter();
+
+
+ /*
+ *  各页面的渲染机制
+ *	分别为index,shopList,adminDetail,shopDetail模块
+ *  作者:hoverCow,日期:2017-03-01
+ */
+
+var routerRender = {
+	index : function(){
+		Header.render();
+		Index.render();
+		Footer.render();
+		if(void 0 === adminDetailData.get('adminPoints')) return;
+		ShopList.initialize();
+		ShopList.handlerRequest();
+		ShopList.render();
+	},
+	shopList : function(){
+		Header.render();
+		Footer.render()
+		ShopList.initState();
+	},
+	adminDetail : function(){
+		Header.render();
+		Footer.render();
+		AdminDetail.render();
+	},
+	shopDetail : function(id){
+		Header.render();
+		ShopDetail.initState(Number(id));
+	},
+	listener : {
+		shopListEvent : function(){
+			ShopList.render();
+		},
+		addressEvent : function(){
+			Header.render();
+			ShopList.initState();
+			if(null !== globalData.get('routerId')) return;
+			//ShopList.handlerRequest();
+			ShopList.render();
+		},
+		adminDetail : function(){
+			if(globalData.get('routerId') === 'adminDetail') AdminDetail.render();
+		},
+		shopDetail : function(){
+			ShopDetail.state = shopDetailData.last().attributes;
+			ShopDetail.render();
+		},
+		pageTab : function(){
+			ShopDetail.initState(ShopDetail.state.id);
+		}
+	}
+}
 
 //首页页面
 app_router.on('route:index', function(id){
 	globalData.set({routerId:null});
-	indexShow.init();
+	routerRender.index();
 });
 //用户详情页面
 app_router.on('route:adminDetail', function(){
 	globalData.set({routerId:"adminDetail"});
-	adminDetailShow.init();
+	routerRender.adminDetail();
 });
 //店铺列表页页面
 app_router.on('route:shopList',function(id){
 	globalData.set({routerId:id});
-	shopListShow.init();
+	routerRender.shopList();
 });
 
 //店铺列表页页面
 app_router.on('route:shopDetail',function(id){
 	globalData.set({routerId:id});
-	shopDetailShow.init(id);
+	routerRender.shopDetail(id);
 });
 
 Backbone.history.start();
@@ -125,7 +124,7 @@ Backbone.history.start();
  */
 
 shopListData.on('reset set add',function(){
-	ShopList.render();
+	routerRender.listener.shopListEvent();
 })
 
 /*
@@ -135,18 +134,11 @@ shopListData.on('reset set add',function(){
  */
 
 adminDetailData.on('change:adress',function(){
-	Header.render();
-	ShopList.initialize();
-	if(null === globalData.get('routerId')){
-		ShopList.handlerRequest();
-		ShopList.render();
-	}
+	routerRender.listener.addressEvent();
 })
 
 adminDetailData.on('change',function(){
-	if(globalData.get('routerId') === 'adminDetail'){
-		AdminDetail.render();
-	}
+	routerRender.listener.adminDetail();
 })
 
 /*
@@ -154,10 +146,9 @@ adminDetailData.on('change',function(){
  * 作者:hoverCow,日期:2017-03-05
  */
 shopDetailData.on('add',function(){
-	ShopDetail.state = this.last().attributes;
-	ShopDetail.render();
+	routerRender.listener.shopDetail();
 })
 
 shopDetailData.on('change:pageTab',function(){
-	ShopDetail.initState(ShopDetail.state.id);
+	routerRender.listener.pageTab();
 })
