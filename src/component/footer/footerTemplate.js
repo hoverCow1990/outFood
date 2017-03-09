@@ -1,4 +1,4 @@
-import {baseHost} from '../../defaultConfig/config';
+import {baseHost} from '../../config/config';
 
 var HeaderTemplate = `
   	<div class="weui-flex">

@@ -1,75 +1,79 @@
-import HeaderTemplate from './headerTemplate';
-import {headerConfig} from '../../defaultConfig/config';
+import {headerConfig} from '../../config/config';
 import {requestadminDetail} from '../../requestApi/requestApi';
-import adminDetailData from '../../store/adminDetailData';
-import {baseHost} from '../../defaultConfig/config';
-
- /*
+import headerTemplate from './headerTemplate';
+import {baseHost} from '../../config/config';
+/*
  *  头部导航部分
- *	渲染Header,页面滚动时测算高度前200px内进行变黑动画
- *  作者:hoverCow,日期:2017-03-01
+ *	渲染Header,左侧用户地址栏以及右侧搜索框
+ *  作者     : hoverCow
+ *  日期     : 2017-03-02
+ *  GitHub   : https://github.com/hoverCow1990/outFood
  */
 
+//头部组件试图层
 var Header = Backbone.View.extend({  
 	tagName : 'div',  
 	className : 'weui-flex',
+	//注册相关事件
 	events :{
- 		'keyup .search' : 'handlerSearch',
- 		'touchstart .submit' : 'handerSubmit'
+ 		'keyup .search' : 'handlerInputStyle',			//搜索栏事件
+ 		'touchstart .submit' : 'handerSubmit'			//提交按钮时间			
 	},
-	//发送用户信息请求,用于获取地址
-	initialize : function(){
-		requestadminDetail();
+	dom : {
+		$appWrapper : $('#app-Wrapper')
 	},
-	//模板需求信息为数据层adminDetail内的adress
-  	template: function(){
-  		var data = {adress : adminDetailData.toJSON().adress};  
-  		if(data.adress === void 0) return '';
-		return juicer(HeaderTemplate, data);
-  	},
+	//头部模块数据
+	state : {
+		address : ''
+	},
+	//初始化state并且根据传入的boolean选择是否需要渲染
+	setState : function(nextState){
+		if(nextState.address === void 0) return;
+		this.state.address = nextState.address;
+		this.render();
+	},
   	//渲染头部
 	render : function(){ 
-		if(void 0 === adminDetailData.get('name')) return;
 		var $dom = $('#header');
-	    this.el.innerHTML = this.template();
+	    this.el.innerHTML = juicer(headerTemplate,this.state);
 	    $dom.append(this.el);  
 	    this.initEvents($dom);
 	    this.delegateEvents();  	//渲染后需要重新激活按键事件
 	},
-	//变黑动画函数,maxTop来自headerConfig为200
+	requestadminDetail : function(success){
+		requestadminDetail(success);
+	},
+	//变黑动画函数,当页面往下滚动时,头部导航栏变黑,maxTop来自headerConfig为200px!
 	initEvents : function($dom){
 		var maxTop = headerConfig.maxTop,
 			scrollTop,pop,bgColor;
-		$('#app').off('touchmove.nav').on('touchmove.nav',function(){
-			var scrollTop = -1*this.getBoundingClientRect().top;
+		this.dom.$appWrapper.off('scroll.nav').on('scroll.nav',function(){
+			scrollTop = this.scrollTop;
 			if(scrollTop < maxTop){ 
-				pop = Number((scrollTop/maxTop).toFixed(2));
-				bgColor = (pop * 0.9);
+				pop = scrollTop/maxTop;
+				bgColor = (pop * 0.9).toFixed(2);
 				$dom.css({
-					'backgroundColor' : 'rgba(0,0,0,'+bgColor+')',
+					'backgroundColor' : 'rgba(0,0,0,'+ bgColor +')',
 				})
 			}
-		});
+		})
 	},
-	//注销头部导航的动画
-	cancelEvent : function(){
-		$('#index').off('touchmove.nav');
-	},
-	handlerSearch : function(e){
+	//处理input按钮键入时submit按键的出现与小时
+	handlerInputStyle : function(e){
 		var $input = $(e.target),
 			$sub = $input.next().next(),
 			val = $input.val();
-		if(val !== ''){
-			$sub.addClass('active');
+		if(val !== ''){						//有值时active
+			$sub.addClass('active');		
 		}else{
-			$sub.removeClass('active');
+			$sub.removeClass('active');	
 		}
 	},
+	//当进行提交时跳转页面到对应的路径
 	handerSubmit : function(e){
 		e.preventDefault();
        	e.stopPropagation();
-		var val = $('.search',this.$el).val();
-		window.location = baseHost + '#/shopList/' + val;
+		window.location = baseHost + '#/shopList/' + $('.search',this.$el).val();
 	}
 });  
 

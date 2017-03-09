@@ -1,10 +1,27 @@
-//var baseHost = 'http://www.web-jackiee.com/templets/blog/demo/outFood/views/app.html';
-//var baseHost = 'http://localhost:3000/dist/views/app.html'; //仅pc端
 var baseHost = 'http://192.168.1.3:3000/dist/views/app.html'; //手机同步测试
+//var baseHost = 'http://www.web-jackiee.com/templets/blog/demo/outFood/views/app.html'; //正式上线地址
+
+
+/*
+ * 修改据juicer的内置变量符号(encode类型)原本为${}
+ * 由于使用``避免与原语法冲突修改为<%= ..=>
+ */
+juicer.set({    
+    'tag::noneencodeOpen': '<%= ',  
+    'tag::noneencodeClose': '=>',   
+});  
+
+//关闭JqWeiUi内模态框点击既关闭的设置
+//$.modal.prototype.defaults.autoClose = false;
 
 //头部设置
 var headerConfig = {
-	maxTop : 400			//动画截止高度
+	maxTop : 400			        //动画截止高度
+}
+
+//头部设置
+var shopListConfig = {
+  requestDistance : 50      //距离底部多少距离时候开始请求
 }
 
 var trafficConfig = {
@@ -25,18 +42,18 @@ var trafficConfig = {
           MapTypeControl : [false]     		//卫星模式
         }
       },
-      overlay : {                             		//覆盖物指针
-        Switch : true,            					//是否开启
+      overlay : {                         //覆盖物指针
+        Switch : true,            				//是否开启
         img : 'https://img.alicdn.com/imgextra/i3/700459267/TB2iTlrcp5N.eBjSZFKXXX_QVXa_!!700459267.png', //指针雪碧图地址 不传则用默认图片
-        size : [32,32],           					//图片尺寸
-        offset : [17,40],         					//位置偏移量
-        styleIndex : [1,2],        				 	//第一个为商铺样式,第二个为用户样式 参数有1-10种不同样式一一对应
+        size : [32,32],           				//图片尺寸
+        offset : [17,40],         				//位置偏移量
+        styleIndex : [1,2],        				//第一个为商铺样式,第二个为用户样式 参数有1-10种不同样式一一对应
         drug : false,           					//指针是否能拖拽
-        drugFn : function(e){       				//拖拽执行的事件
+        drugFn : function(e){       			//拖拽执行的事件
           console.log("x:" + e.point.lng + ",y:" + e.point.lat);
         },
-        click : false,            					//指针是否点击事件
-        clickFn : function(){       				//点击执行的事件
+        click : false,            				//指针是否点击事件
+        clickFn : function(){       			//点击执行的事件
           console.log('welcome');
         }
       },
@@ -61,7 +78,7 @@ var trafficConfig = {
         img : {               						//终点起点覆盖物
           Switch : false,       					//覆盖物开关
           src : "http://developer.baidu.com/map/jsdemo/img/location.gif",      //覆盖物图片不填则用默认的
-          size : [32,32],         					//图片尺寸
+          size : [32,32],         				//图片尺寸
         }, 
         list : {              						//坐车列表
           Switch : true,         					//是否打开
@@ -71,4 +88,4 @@ var trafficConfig = {
     }
 
 
-export {baseHost,headerConfig,trafficConfig};
+export {baseHost,headerConfig,shopListConfig,trafficConfig};

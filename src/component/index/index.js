@@ -2,35 +2,46 @@ import indexTemplate from './indexTemplate';
 import fastclick from '../../plug-in/fastclick.js';
 import weui from '../../plug-in/jquery-weui.min';
 import swiper from '../../plug-in/swiper.min';
-import ShopList from '../shopList/shopList';
-import {requestShopList} from '../../requestApi/requestApi';
 
+/*
+*  Index页面
+*  页面利用adminDatil内的scrollTop保存页面位置
+*  作者     : hoverCow
+*  日期     : 2017-03-03
+*  GitHub   : https://github.com/hoverCow1990/outFood
+*/
 
+//Index组件试图层
 var Index = Backbone.View.extend({  
 	tagName : 'div',  
 	id : 'index',
-	events :{
- 
+	dom : {
+		$app 		: $('#app'),
+		$appWrapper : $('#app-Wrapper')
 	},
-	serialize : function() {
-
+	state : {
+		scrollTop : 0,
+	},
+  	setState : function(nextState){
+  		this.state.scrollTop = nextState.scrollTop
+  		this.render();
   	},
-  	template: function(){
-  		var data = { };  
-		return juicer(indexTemplate, data);
-  	},
-	render : function(){  
-	    this.el.innerHTML = this.template();
-	    $('#app').text('')
-	    $('#app').append(this.el);  
+	render : function(){
+	    this.el.innerHTML = juicer(indexTemplate,this.state);
+	    this.dom.$app.text('').append(this.el);  
 	    this.initEvents();
 	},
+	//调用轮播插件以及修改滚动高度
 	initEvents : function(){
+		var scrollTop = this.state.scrollTop,
+			height = scrollTop + $(window).height();
 		$(".swiper-container").swiper({
 		    loop: true,
 		    autoplay: 3000,
 		    paginationClickable: true
 		});
+		this.dom.$app.css('height',height);					//优先将app高度调整,不然无法设置scrollTop;
+		this.dom.$appWrapper.scrollTop(scrollTop);
 	}
 });  
 

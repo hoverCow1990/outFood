@@ -1,9 +1,18 @@
-import {baseHost} from '../../defaultConfig/config';
+import {baseHost} from '../../config/config';
 
-var HeaderTemplate = `
+/*
+ *  HeaderTemplate
+ *  头部部分Juicer模板 
+ *  数据调用state内address
+ *  作者     : hoverCow
+ *  日期     : 2017-03-03
+ *  GitHub   : https://github.com/hoverCow1990/outFood
+ */
+
+var headerTemplate = `
   <div class="header-info weui-flex__item">
     <a href=${baseHost}#/adminDetail >
-      <input class='info' readonly="readonly" value="<%= adress.replace(/.+区/,'') =>"/>
+      <input class='info' readonly="readonly" value="<%= address.replace(/.+区/,'') =>"/>
       <i class='icon-shouhuodizhi'></i>
     </a>
   </div>
@@ -16,6 +25,4 @@ var HeaderTemplate = `
   </div>
 `
 
-
-
-export default HeaderTemplate; 
+export default headerTemplate; 

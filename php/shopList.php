@@ -609,7 +609,7 @@
  	$array = array();
 
 	switch ($tag){
-		case 'all' :
+		case 'index' :
 			$array = $arr;
 			break;
 		case 'delicious' :

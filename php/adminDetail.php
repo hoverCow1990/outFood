@@ -3,11 +3,10 @@
 	$arr = array (
 			"name" => "胖胖的牛牛哦",
   		"tele" => "13636556375",
-  		"adress" => "徐汇区长桥八村27号",
-      "allAdress" => array('0' => "徐汇区长桥八村27号",'1' => "普陀区金沙江路823号"),
+  		"address" => "徐汇区长桥八村27号",
+      "allAddress" => array('0' => "徐汇区长桥八村27号",'1' => "普陀区金沙江路823号"),
       "adminPoints" => null,
   		"balance" => 52.2,
-  		"friend" => array(),
   		"redPacket" => array(
         '0' => array(
           "value" => 2,

@@ -1,9 +1,54 @@
 import requestUrl from './requestUrl';
-import ShopList from '../component/shopList/shopList';
-import shopListData from '../store/ShopListData';
-import adminDetailData from '../store/adminDetailData';
-import shopDetailData from '../store/shopDetailData';
 import distanceQuery from '../lib/distanceQuery';
+import store from '../store/store'
+import ShopList from '../component/shopList/shopList';
+// import shopListData from '../store/ShopListData';
+// import adminDetailData from '../store/adminDetailData';
+// import shopDetailData from '../store/shopDetailData';
+
+/*
+ *  用于各类数据请求
+ *  作者     : hoverCow
+ *  日期     : 2017-03-02
+ *  GitHub   : https://github.com/hoverCow1990/outFood
+ */
+
+/* 
+ * 请求用户信息
+ * 返回json对象示例 : {
+ * adminPoints:null
+ * adress:""
+ * allAdress: ['']
+ * balance:52.2
+ * friend: [],
+ * name:"胖胖的牛牛哦"
+ * order:[]
+ * redPacket:[{
+ *	 value : 2,
+ *	 time : '2017-3-25'
+ * }]
+ * tele:"13636556375"}
+ */
+
+function requestadminDetail(success,fail){
+	$.ajax({
+		url : requestUrl.adminDetail,
+		type : 'post',
+		dataType : 'json',
+		success: function(data){
+			distanceQuery.getPoints(data.address,function(point){
+				data.adminPoints = point;
+				store.adminDetail.set(data);
+				success && success();
+			})
+		},
+		error:function(err){
+			fail && fail(err)
+		}
+	})
+} 
+
+
 
 /* 请求shopList
  * data为请求数组的起始点,end为请求数据的结束点
@@ -19,49 +64,30 @@ function requestShopList(start,tag,cb){
 		},
 		dataType : 'json',
 		success: function(data){
+			var shopListData = tag === 'index'?store.shopList:store.shopListAssistant;
 			if(data.length === 0){
-				cb && cb();
+				ShopList.state.requestSwitch = false;
+				ShopList.render();
 				return;
 			}
 			if(data[0].id == -1){
-				ShopList.state.hasData = false;
-				shopListData.reset({});
+				ShopList.state.hasSearchData = false;
+				shopListData.reset([]);
 				return;
 			}
-			ShopList.state.hasData = true;
-			distanceQuery.getDistance(data,adminDetailData.get('adminPoints'),function(data){
-				var state = shopListData.toJSON(),
-				data = data.map(function(item){
-					return item;
-				}),
+			ShopList.state.hasSearchData = true;
+			distanceQuery.getDistance(data,store.adminDetail.get('adminPoints'),function(data){
+				var	state = shopListData.toJSON(),
+				// data = data.map(function(item){
+				// 	return item;
+				// }),
 				state = state.concat(data);
-				if(!state[0].hasOwnProperty('id')) state.shift();
+				//if(!state[0].hasOwnProperty('id')) state.shift();
 				shopListData.reset(state);
 			});
 		},
 		error:function(err){
 			shopListData.reset({});
-		}
-	})
-} 
-
-/* 请求用户数据
- * 返回用户数据
- */
-function requestadminDetail(cb){
-	$.ajax({
-		url : requestUrl.adminDetail,
-		type : 'post',
-		dataType : 'json',
-		success: function(data){
-			distanceQuery.getPoints(data.adress,function(point){
-				data.adminPoints = point;
-				adminDetailData.set(data);
-				cb && cb();
-			})
-		},
-		error:function(err){
-			console.log(err)
 		}
 	})
 } 

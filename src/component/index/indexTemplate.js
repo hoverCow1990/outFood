@@ -1,4 +1,12 @@
-import {baseHost} from '../../defaultConfig/config';
+import {baseHost} from '../../config/config';
+
+/*
+*  indexTemplate
+*  Index部分Juicer模板 
+*  作者     : hoverCow
+*  日期     : 2017-03-03
+*  GitHub   : https://github.com/hoverCow1990/outFood
+*/
 
 var indexTemplate = `
 <section id='outFood-carousel' class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
@@ -88,9 +96,7 @@ var indexTemplate = `
 		</div>
 	</div>
 </section>
-<section id='shopList-container' class='outFood-nearby'>
-
-</section>
+<section id='shopList-container' class='outFood-nearby'></section>
 `
 
 export default indexTemplate; 
