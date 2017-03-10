@@ -1,9 +1,9 @@
 import {baseHost} from '../../config/config';
 
 /*
- *  HeaderTemplate
+ *  headerTemplate
  *  头部部分Juicer模板 
- *  数据调用state内address
+ *  数据调用state内address,address处理时会值显示区后面的内容
  *  作者     : hoverCow
  *  日期     : 2017-03-03
  *  GitHub   : https://github.com/hoverCow1990/outFood

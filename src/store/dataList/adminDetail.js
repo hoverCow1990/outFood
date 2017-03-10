@@ -16,7 +16,7 @@
  *		redPacket   : [{					   //用户红包列表
  *		  'value' : 2,						   //红包金额
  *		  'time'  : '2017-3-25'}] 			   //红包截止日期
- *		order : [],							   //订单列表
+ *		orderList : [],						   //订单列表
  *		adminPoints : new BMap.Point(x,y),	   //在调用百度地址接口后储存进度纬度坐标[请求时没有],
  *		tabActive   : 2                        //记录用户在首页是后点击排序按钮后的index
  *		scrollTop 	:                          //记录用户每次在首页滚屏高度,再重新渲染首页时调用

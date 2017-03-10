@@ -11,9 +11,6 @@ juicer.set({
     'tag::noneencodeClose': '=>',   
 });  
 
-//关闭JqWeiUi内模态框点击既关闭的设置
-//$.modal.prototype.defaults.autoClose = false;
-
 //头部设置
 var headerConfig = {
 	maxTop : 400			        //动画截止高度

@@ -41,10 +41,14 @@ DistanceQuery.prototype = {
 		var state = {length:arr.length,count:0},				//用json数据类型传入,由于是引用,多次累加后当count === arr.length时代表所有数据请求完毕
 			self  = this,newArr = new Array();		
 		arr.forEach(function(item){
-			self.getPoints(item.address,function(shopPoints){	//首先调用getPoints,获取到商铺的new BMap.Point(x,y)坐标对象,在进行search
-				item.points = shopPoints;
-				self.handlerSearch(item,shopPoints,adminPoints,state,callBack);	
-			})
+			if(item.points){
+				self.handlerSearch(item,item.points,adminPoints,state,callBack);	
+			}else{
+				self.getPoints(item.address,function(shopPoints){	//首先调用getPoints,获取到商铺的new BMap.Point(x,y)坐标对象,在进行search
+					item.points = shopPoints;
+					self.handlerSearch(item,shopPoints,adminPoints,state,callBack);	
+				})
+			}
 		});
 		function callBack(){
 			success && success(arr);							//当数据全部执行完毕后调用传入的success

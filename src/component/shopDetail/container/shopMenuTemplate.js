@@ -1,4 +1,13 @@
-var ShopMenuTemplate = `
+/*
+ *  shopMenuTemplate
+ *  渲染商铺详情页内的菜单视图
+ *  需求数据state.list内 item.name:品名,item.score:评分,sell:月售,value:价格,num判断是否显示减号和产品数额
+ *  作者     : hoverCow
+ *  日期     : 2017-03-06
+ *  GitHub   : https://github.com/hoverCow1990/outFood
+ */
+
+var shopMenuTemplate = `
 <ul class='order-menu'>
 	{@each menu as item,index}
 	<li>
@@ -16,7 +25,7 @@ var ShopMenuTemplate = `
 				</div>
 				<div class='consume-select'>
 					<div class='select-box' data-id='<%= item.id =>'>
-						{@if item.num>0}
+						{@if item.num > 0}
 							<div class='select plus'>-</div>
 							<span class='active'><%= item.num =></span>
 						{@/if}
@@ -29,10 +38,4 @@ var ShopMenuTemplate = `
 	{@/each}
 </ul>
 `
-
-// juicer.register('getLength',function(arr){
-//  	return arr.length;
-// })
-
-
-export default ShopMenuTemplate; 
+export default shopMenuTemplate; 

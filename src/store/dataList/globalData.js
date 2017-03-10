@@ -16,7 +16,8 @@
  */
 
 var globalData = new Backbone.Model({
-	routerId : '',
+	lastRouterId : '',
+	routerId : ''
 });
 
 export default globalData;

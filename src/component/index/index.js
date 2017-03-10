@@ -9,6 +9,10 @@ import swiper from '../../plug-in/swiper.min';
 *  作者     : hoverCow
 *  日期     : 2017-03-03
 *  GitHub   : https://github.com/hoverCow1990/outFood
+*  ----------------------------------------------------------------------
+*  state示例: {
+*    scrollTop : 200           //储存主页滚动后离开时候的高度,再次路由匹配至首页时返回该高度
+*  }
 */
 
 //Index组件试图层
@@ -22,10 +26,12 @@ var Index = Backbone.View.extend({
 	state : {
 		scrollTop : 0,
 	},
+	//更新状态
   	setState : function(nextState){
   		this.state.scrollTop = nextState.scrollTop
   		this.render();
   	},
+  	//渲染
 	render : function(){
 	    this.el.innerHTML = juicer(indexTemplate,this.state);
 	    this.dom.$app.text('').append(this.el);  

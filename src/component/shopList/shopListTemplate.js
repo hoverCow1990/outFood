@@ -6,7 +6,6 @@ import {baseHost} from '../../config/config';
  *  数据调用state内所有数据
  *  routerId不为index时渲染banner页
  *  columnTitle用于渲染商铺列表的标题,根据不同路由渲染不同标题
- *  
  *  作者     : hoverCow
  *  日期     : 2017-03-04
  *  GitHub   : https://github.com/hoverCow1990/outFood

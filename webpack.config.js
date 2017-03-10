@@ -2,7 +2,7 @@ var webpack  =  require("webpack");
 var fs 		 =  require('fs');
 var path  	 =  require("path");
 var srcDir   =  path.join(__dirname, './src');    
-var SRC_JS   =  path.join(srcDir + "/js");
+var SRC_JS   =  path.join(srcDir + "/main");
 var distDir  =  path.join(__dirname, './dist');	 
 var CommonsChunkPlugin  =  webpack.optimize.CommonsChunkPlugin;
 //入口文件
@@ -19,7 +19,7 @@ module.exports = {
   	entry : entryDir,
 	output : {
 		path: distDir, 					//输出路径,需传入绝对路径
-	    filename: "[name].js",		//输出文件名,需要输出到JS文件夹下路径加在了filename中//publicPath: '/', //指定引用路径,在服务器模式下使用才会表现正常								
+	    filename: "[name].js",			//输出文件名,需要输出到JS文件夹下路径加在了filename中//publicPath: '/', //指定引用路径,在服务器模式下使用才会表现正常								
 	},
 	plugins:[
         new webpack.optimize.CommonsChunkPlugin({

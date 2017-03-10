@@ -1,6 +1,14 @@
 import {baseHost} from '../../config/config';
 
-var HeaderTemplate = `
+/*
+ *  footerTemplate
+ *	底部Juicer模板
+ *  作者     : hoverCow
+ *  日期     : 2017-03-02
+ *  GitHub   : https://github.com/hoverCow1990/outFood
+ */
+
+var footerTemplate = `
   	<div class="weui-flex">
 	  <div class="header-info weui-flex__item">
 	  	<div class='footer-select'>
@@ -29,4 +37,4 @@ var HeaderTemplate = `
 
 
 
-export default HeaderTemplate; 
+export default footerTemplate; 
