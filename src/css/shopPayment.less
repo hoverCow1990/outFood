@@ -1,0 +1,154 @@
+@import './regular.less';
+
+.shopPayment{
+	.shopPayment-banner{
+		width:100%;
+		height:135px;
+		background-image:url('http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/banner/payment.jpg');
+		background-size:cover;
+	}
+	.flexPadding(@padding:20px){
+		display:flex;
+		padding:@padding;
+	}
+	@bgColor:#f9f9f9;
+	.shopPayment-hd{
+		.flexPadding();
+		margin-top:12px;
+		margin-bottom:6px;
+		background:@bgColor;
+		.hd-logo{
+			width:80px;
+			height:80px;
+			float:left;
+			border-radius:50%;
+			overflow:hidden;
+			img{
+				display:block;
+				height:100%;
+			}
+		}
+		.hd-info{
+			flex:1;
+			float:left;
+			margin-left:21px;	
+			.info-title{
+				margin-top:6px;
+			    padding-bottom: 6px;
+			    border-bottom: 1px solid #eaeaea;
+			    overflow:hidden;
+			    p{
+			        float: right;
+			        padding: 1px 6px 1px 6px;
+				    margin-top: 0;
+				    background: #222;
+				    color: #eee;
+				    border-radius: 3px;
+			    }
+			}	
+			h4{
+			    float:left;
+			    font-size: 15px;
+			}
+			p{
+				font-size:12px;
+			    margin-top:10px;
+			    color:#999;
+			}
+			span{
+				margin-left:5px;
+				font-size:20px;
+				font-weight:bold;
+				color:#2a89ef;
+			}
+		}
+	}
+	.shopPayment-select{
+		.flexPadding();
+		justify-content:space-between;
+		&>div{
+		    padding:8px;
+		    border-radius:3px;
+		    height:130px;
+		    &:nth-child(1){
+		    	flex:3;
+		    	height:130px;
+		    }
+		    &:nth-child(2){
+		    	flex:6;
+		    	margin-left:10px;
+		    	height:130px;
+		    	overflow-y:hidden;
+		    }
+		    h4{
+		    	font-size:13px;
+		    	color:#292929;
+		    	margin-bottom:15px;
+		    }
+		    .all{
+		    	font-size:15px;
+    			color: #5f5f5f;
+		    }
+		    .minus{
+		    	font-size:15px;
+			    margin-top: 8px;
+			    padding-bottom: 8px;
+			    color: #5f5f5f;
+			    border-bottom: 1px solid #eaeaea;
+		    }
+		    .result{
+			    margin-top: 6px;
+			    font-size: 20px;
+			    font-weight: bolder;
+			    color: #2a89ef;
+		    }
+		    li{
+		    	display:flex;
+		    	justify-content:space-between;
+		    	width:100%;
+		    	height:20px;
+		    	line-height:20px;
+		    	font-size:12px;
+		    	color: #a2a2a2;
+		    	&:not(:last-child){
+		    		margin-bottom:10px
+		    	}
+		    	span{
+		    		margin-left:9px;
+		    	}
+
+		    }
+		    .select-input{
+		    	position:relative;
+		    	box-sizing:border-box;
+		    	width:20px;
+		    	height:20px;
+		    	border-radius:50%;
+		    	border:1px solid #e2e2e2;
+		    	&.active:after{
+		    		position: absolute;
+				    content: '';
+				    width: 14px;
+				    height: 14px;
+				    top: 2px;
+				    left: 2px;
+				    border-radius: 50%;
+				    background-color: #2a89ef;
+		    	}
+		    }
+		}
+	}
+	.shopPayment-ensure{
+		width:222px;
+	    height: 38px;
+	    margin-left: auto;
+	    margin-right: auto;
+	    background: #2a89ef;
+	    line-height: 38px;
+	    border-radius: 3px;
+	    color: #eee;
+	    font-size: 16px;
+	    text-align: center;
+	    letter-spacing: 2px;
+	}
+}

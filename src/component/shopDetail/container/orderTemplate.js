@@ -1,3 +1,5 @@
+import {baseHost} from '../../../config/config';
+
 /*
  *  OrderTemplate
  *  渲染在menu内的footer下
@@ -10,13 +12,15 @@
 var OrderTemplate = `
 <div class='order-package'>
 	<div class='package-cil active'>
-		<i class='icon-gouwuchetianjia'></i>
-		<span><%= allLength =></span>
+		<a href=${baseHost}#/orderList>
+			<i class='icon-gouwuchetianjia'></i>
+			<span><%= allLength =></span>
+		</a>
 	</div>
 	<div class='package-info'>
 		<div class='info-value'><p>¥</p><span class='payment'><%= payment =></span><p>+ 快递费¥</p><span><%= express =></span></div>
 		{@if payment - start >= 0}
-			<div class='info-btn active'>结算</div>
+			<div class='info-btn active'><a href=${baseHost}#/shopPayment/<%= id =>>结算</a></div>
 		{@else}
 			<div class='info-btn'>差<%= start - payment =></div>
 		{@/if}

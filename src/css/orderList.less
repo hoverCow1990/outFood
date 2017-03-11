@@ -1,0 +1,146 @@
+@import './regular.less';
+
+.orderList{
+	.orderList-banner{
+		width: 100%;
+		height:135px;
+		background-image:url('http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/banner/orderlist.jpg');
+		background-size:cover;
+	}
+	.orderList-container{
+		width:90%;
+		margin:2px auto;
+    	overflow-y: scroll;
+	}
+	.noOrderList{
+		padding-top:38px;
+		margin-top:10px;
+		border-top:1px solid #f1f1f1;
+		font-size:12px;
+		color:#999;
+		text-align:center;
+		i{
+			font-size:47px;
+			color:#c33838;
+			font-weight:bold;
+		}
+		p{
+			margin-top:10px;
+			letter-spacing:2px;
+		}
+	}
+	.orderList-list{
+		width:100%;
+    	overflow:hidden;
+		&>li{
+			padding:10px;
+			margin-top:6px;
+			border:1px solid #ececec;
+			border-radius:2px;
+			overflow:hidden;
+		}
+		.list-title{
+			height:22px;
+		    padding-bottom:3px;
+		    margin-bottom:5px;
+		    line-height:22px;
+		    span{
+		    	float:right;
+		    	font-size:12px;
+		    	color:#9a9a9a;
+		    }
+		}
+		h4{
+		    display:block;
+		    float:left;
+		    font-size:15px;
+		    color:#3a3a3a;
+		    letter-spacing:1px;
+		}
+		@blueColor : #2d95dc;
+		.list-detail{
+			width:100%;
+			padding-bottom:7px;
+		    color:#b9b9b9;
+		    border-bottom:1px solid #f1f1f1;
+		    overflow:hidden;
+			li{
+				width:100%;
+			    height:16px;
+			    padding-top:2px;
+			    padding-bottom:2px;
+			    font-size:12px;
+			    line-height:16px;
+				p{
+					display:block;
+				    float:left;
+				}
+				span{
+					display:block;
+					float:right;
+				}
+			}
+		}
+		.list-ft{
+			width:100%;
+			margin-top:13px;
+		}
+		.list-value{
+			width:130px;
+		    height:100%;
+		    float:left;
+		    line-height:30px;
+		    font-size: 12px;
+		    letter-spacing:1px;
+		    color:#5f5f5f;
+		    span{
+		    	margin-left:10px;
+		    	font-size:22px;
+		    	font-weight:bold;
+		    	color:#ff4a4a;
+		    }
+		}
+		.list-entrance{
+			width:180px;
+			float:right;
+			font-size:12px;
+			text-align:center;
+			div{
+				box-sizing:border-box;
+				width:80px;
+    			height:30px;
+				float:left;
+				margin-left:10px;
+			    line-height:30px;
+			    border-radius:2px;
+			   	color:#eee;
+			   	&.change{
+			   		border:1px solid #ececec;
+			   		a{
+			   			color:#222;
+			   		}
+			   	}
+			   	&.payMore{
+			   		background-color:#888;
+			   		a{
+			   			color:#eee;
+			   		}
+			   	}
+			    &.active{
+			    	background-color:@blueColor;
+			    	a{
+			   			color:#eee;
+			   		}
+			    }
+			    a{
+			    	display:block;
+			    	width:100%;
+			    	height:100%;
+			    }
+			}
+		}
+	}
+	.toBeBay{
+
+	}
+}

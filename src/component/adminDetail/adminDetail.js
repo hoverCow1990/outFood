@@ -26,7 +26,9 @@ var AdminDetail = Backbone.View.extend({
   tagName : 'div',  
   className : 'adminDetail',
   events  : {
-    'click  .admin-list' : 'handlerEvents',
+    'touchstart .admin-list'     : 'handlerEvents',
+    'touchstart .item-blance'    : 'handlerRecharge',
+    'touchstart .item-redPacket' : 'handlerRedPacket'
   },
   dom : {
     $app : $('#app')
@@ -53,11 +55,10 @@ var AdminDetail = Backbone.View.extend({
       case 'address':
         this.handlerAddress();          //修改地址模态框
         break;
-      case 'store' :
-        this.handlerStore();            //跳转收藏商户
-        break;
       case 'recharge':
-        this.handerRecharge();          //充值模态框
+        this.handlerRecharge();          //充值模态框
+        break;
+      default :
         break;
     }
   },
@@ -135,28 +136,31 @@ var AdminDetail = Backbone.View.extend({
       })
     })
   },
+  //用于验证各类input值
   validator : {
+    //验证用户基础信息
     checkInfo : function(nameVal,teleVal,$name,$tele){
-      if(nameVal.trim() === '') return $name.addClass('err');
+      if(nameVal.trim() === '') return $name.addClass('err');                                      //回避空信息,不关闭模态框
       $name.removeClass('err');
-      if(teleVal.trim() === '' || !/^1[34578]\d{9}$/.test(teleVal)) return $tele.addClass('err');
+      if(teleVal.trim() === '' || !/^1[34578]\d{9}$/.test(teleVal)) return $tele.addClass('err');  //回避无效手机号,不关闭模态框
       $tele.removeClass('err');
-      if(nameVal === this.state.name && teleVal === this.state.tele) return false;
-      return true;
+      if(nameVal === this.state.name && teleVal === this.state.tele) return false;                 //信息与原数据一致,关闭模态框,但不进行重新渲染
+      return true;                                                                                 //有效信息并进行页面的重绘
     },
+    //验证地址信息
     checkNewAddress : function($lastLi,allAddress){
         var $input   = $lastLi.find('input'),
             address  = $input.val(),
             val      = $input.prev().val() +'区'+ address,
             myGeo    = new BMap.Geocoder(),
             self     = this;
-          if(address.trim() === '') return alert('地址不能为空'),$input.addClass('err');
-          if(!/^[^\d]+\d{1,4}[号弄]/.test(address)) return alert('请填写准确的几弄或者几号'),$input.addClass('err');
-          if(val === this.state.address) return alert('已经存在该地址'),$input.addClass('err');
-          DistanceQuery.getPoints(address,function(point){                      //谷歌地图查询地址如果返回null代表没有查询到目的地址
+          if(address.trim() === '') return alert('地址不能为空'),$input.addClass('err');                      //避开空信息,弹窗提示并高亮input
+          if(!/[号弄]/g.test(address)) return alert('请填写准确的几弄或者几号'),$input.addClass('err');       //验证是否有填写准确的弄或者号
+          if(val === this.state.address) return alert('已经存在该地址'),$input.addClass('err');               //验证是否与之前的地址有重复
+          DistanceQuery.getPoints(address,function(point){                      //谷歌地图Api如果返回null代表没有查询到目的地址,是无效地址
             self.handlerUpdateAddress(val,point,allAddress.concat([val]));      //地址存在调用handlerSelectAddress修改数据层
           },function(err){
-            return alert('无法定位到' + address),$input.addClass('err');
+            return alert('无法定位到' + address),$input.addClass('err');        //无效地址的回调
           })
     },
     checkOldAddress : function($addressList,allAddress){
@@ -169,6 +173,7 @@ var AdminDetail = Backbone.View.extend({
           });
     }
   },
+  //通过所有地址验证后执行的内容
   handlerUpdateAddress : function(val,point,allAddress){
     var shopListData = store.shopList,
         array        = shopListData.toJSON();
@@ -177,20 +182,17 @@ var AdminDetail = Backbone.View.extend({
       adminPoints : point,
       allAddress  : allAddress
     });
-    DistanceQuery.getDistance(array,point,function(res){                        //更换index页所有距离以及送餐时间
+    DistanceQuery.getDistance(array,point,function(res){                        //更新index页所有距离以及送餐时间的数据
       shopListData.reset(res,{silent:true})
     })
     $.closeModal();
   },
-  handlerStore : function(){
-    window.location = baseHost + '#/shopList/love';                              //跳转页面
-  },
-  handerRecharge : function(){
+  handlerRecharge : function(){
     var self = this;
     $.confirm({
       title: '<p>我要充值</p>',
-      text: '<div class="dialog-wrapper"><div class="msg"><h2>充值提示</h2><p>1.单笔订单充值不得超过500.</p><p>2.如果你长得够帅,充值将无需费用!</p></div><div class="info-input"><input name="value" type="tel" placeholder="充值金额"/></div></div>',
-      onOK: function () {
+      text : '<div class="dialog-wrapper"><div class="msg"><h2>充值提示</h2><p>1.单笔订单充值不得超过500.</p><p>2.如果你长得够帅,充值将无需费用!</p></div><div class="info-input"><input name="value" type="tel" placeholder="充值金额"/></div></div>',
+      onOK : function () {
         var $input = $('input[name^="value"]'),
             val = Number($input.val()),
             adminDetailData = self.state.adminDetailData;
@@ -205,6 +207,28 @@ var AdminDetail = Backbone.View.extend({
       },
     });
   },
+  handlerRedPacket : function(){
+    var text = this.state.redPacket.map(function(item){
+        return '<div class="redPacket-show"><div class="show-value">劵面价值:<span>'+ item.value +'</span></div><div class="show-time"><p>有效期至 :<span>'+ item.time +'</span></p></div></div>'
+    }).join('')
+    $.confirm({
+      title: '<p>我的红包</p>',
+      text : '<div class="dialog-wrapper">'+ text +'</div>',
+      onOK : function () {
+        var $input = $('input[name^="value"]'),
+            val = Number($input.val()),
+            adminDetailData = self.state.adminDetailData;
+        if(val > 500)  return $input.addClass('err');               //如果充值费用高于500,则return
+        adminDetailData.set({
+          balance : val + Number(adminDetailData.get('balance'))    //设置余额数据,对当前界面再次render
+        })
+        $.closeModal();
+      },
+      onCancel: function(){
+        $.closeModal();
+      },
+    });
+  }
 });  
 
 //关闭模态框点击确定即关闭

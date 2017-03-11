@@ -24,6 +24,9 @@
 		border-bottom:5px solid #f1f1f1; 
 		&>div{
 			text-align:center;
+			a{
+				display:block;
+			}
 			&:nth-child(2){
 				border-left:1px solid @greyLine;
 				border-right:1px solid  @greyLine;
@@ -60,6 +63,13 @@
 			float:left; 
 			font-size:14px;
 			color:#999;
+		}
+		.weui-cell{
+			line-height:20px;
+			a{
+				display:flex;
+				width:100%;
+			}
 		}
 	} 
 }
@@ -213,6 +223,66 @@
 			font-size:12px;
 			margin-bottom:10px;
 			letter-spacing:.5px;
+		}
+	}
+	.redPacket-show{
+		position:relative;
+	    padding:10px;
+	    margin-bottom:12px;
+	    border-radius:3px;
+	    background-color: #b7bf6b;
+	    box-shadow: 0 0 49px rgba(0,0,0, 0.2) inset;
+		.show-value{
+			width: 100%;
+		    height: 33px;
+		    margin-bottom: 7px;
+		    border-bottom: 1px solid #c8ce98;
+		    font-size: 13px;
+		    letter-spacing: 1px;
+		    color: #fff;
+		    text-align:left;
+			span{
+				margin-left: 9px;
+				font-size: 20px;
+			    font-weight: bold;
+			    color: #171717;
+			}
+		}
+		.show-time{
+			position: relative;
+		    width: 100%;
+		    height: 19px;
+		    font-size: 12px;
+		    p{
+		    	position:absolute;
+			    display:block;
+			    width:140px; 
+			    right:0;
+			    line-height:19px;
+			   	color:#fff;
+			   	letter-spacing:1px;
+		    }
+			span{
+				display:inline-block;
+			    width:75px;
+			    height:100%;
+			    margin-left:4px;
+			    line-height:19px;
+			    border-radius:3px;
+			    background-color:#222;
+			    text-align:center;
+			    letter-spacing:0;
+			    color:#eee;
+			}
+		}
+		i{
+			position:absolute;
+			display:block;
+			right:10px;
+			top:0;
+			color:#000;
+			font-size:20px;
+			font-weight:bold;
 		}
 	}
 }

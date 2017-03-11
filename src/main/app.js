@@ -5,6 +5,8 @@ import Footer 	   from  '../component/footer/footer';
 import Index 	   from  '../component/index/index';	
 import ShopList    from  '../component/shopList/shopList';
 import ShopDetail  from  '../component/shopDetail/shopDetail';
+import OrderList   from  '../component/orderList/orderList';
+import ShopPayment from  '../component/shopPayment/shopPayment';
 import AdminDetail from  '../component/adminDetail/adminDetail';
 /*
 *  App主要js文件
@@ -66,24 +68,32 @@ var routerRender = {
 	},
 	//商铺详情页的渲染机制
 	shopDetailPage : function(routerId){
-		var lastRouterId = store.globalData.get('lastRouterId'),					//获取之前RouterId
-			baseShopData = lastRouterId === 'index'?store.shopList.get(routerId):store.shopListAssistant.get(routerId),	//获取基础数据准备与新请求的数据合并成完整的商铺数据
-			lastUrl      = lastRouterId === 'index'?'':'shopList/' + lastRouterId;	//将之前RouterId转回为回退按键的URL
-		ShopList.cancelEvents();													//注销ShopList滚屏事件
+		var lastRouterId   = store.globalData.get('lastRouterId'),
+			lastUrl		   = this.getAttr.url(lastRouterId);
 		ShopDetail.setState({														//ShopDetail更新数据进行渲染
-			id:Number(routerId),
-			baseShopData   : baseShopData.attributes,
-			shopDetailData : store.shopDetail,
-			lastUrl   	   : lastUrl
+			id 			 : Number(routerId),
+			lastUrl 	 : lastUrl,
+			lastRouterId : lastRouterId
 		});
+		ShopList.cancelEvents();													//注销ShopList滚屏事件
 		Header.resetBgColor();														//重设Header的背景色
 	},
 	//用户详情的渲染机制
 	adminDetailPage : function(){
 		AdminDetail.setState(store.adminDetail);
-		// Header.render();
-		// Footer.render();
-		// AdminDetail.render();
+	},
+	//订单详情页面
+	orderListPage : function(){		
+		OrderList.setState(store.adminDetail);
+		Footer.render();
+		ShopList.cancelEvents();
+		Header.resetBgColor();
+	},
+	shopPaymentPage : function(routerId){
+		ShopPayment.setState(store.adminDetail.get('orderList')[routerId]);
+		Footer.render();
+		Header.resetBgColor();
+		ShopList.cancelEvents();
 	},
 	//观察者模式
 	listener : {
@@ -109,7 +119,11 @@ var routerRender = {
 	getAttr : {
 		address : function(){
 			return store.adminDetail.get('address');
-		}
+		},
+		url : function(lastRouterId){
+			lastRouterId = lastRouterId.replace('index','');
+			return (lastRouterId === ''|| lastRouterId === 'orderList')? lastRouterId : 'shopList/' + lastRouterId;
+		},
 	},
 	//对之前路径以及新的路径进行配置
 	routerEvent : function(routerId){
@@ -134,10 +148,12 @@ routerRender.init();
 
 var AppRouter = Backbone.Router.extend({
   routes: {
-  	"" 					: 'index',				//首页
-  	"adminDetail" 		: "adminDetail",		//用户详情页
-  	"shopList/:query"   : "shopList",   		//二级页内的店铺列表页
-  	"shopDetail/:query" : "shopDetail"			//商铺详情页
+  	"" 					 : 'index',				//首页
+  	"adminDetail" 		 : "adminDetail",		//用户详情页
+  	"orderList"			 : "orderList",			//用户订单
+  	"shopList/:query"    : "shopList",   		//二级页内的店铺列表页
+  	"shopDetail/:query"  : "shopDetail",		//商铺详情页
+  	"shopPayment/:query" : "shopPayment"		//支付页面
   }
 })
 
@@ -156,8 +172,14 @@ app_router.on('route:index',function(){			//匹配至首页页面
 	routerRender.shopListPage(routerId);
 }).on('route:shopDetail',function(routerId){	//匹配渲染商户详情信息
 	routerRender.routerEvent(routerId);	
-	routerRender.shopDetailPage(routerId);
-});
+	routerRender.shopDetailPage(routerId);		
+}).on('route:orderList',function(){				//匹配至订单页面
+	routerRender.routerEvent('orderList');		
+	routerRender.orderListPage();
+}).on('route:shopPayment',function(routerId){			//匹配至支付页面
+	routerRender.routerEvent(routerId);		
+	routerRender.shopPaymentPage(routerId);
+})
 
 //开启路由机制
 Backbone.history.start();
@@ -179,3 +201,4 @@ store.shopList.on('set reset',function(shopListData){
 store.shopListAssistant.on('set reset',function(shopListAssistantData){
 	routerRender.listener.shopListEvent(shopListAssistantData);
 })
+

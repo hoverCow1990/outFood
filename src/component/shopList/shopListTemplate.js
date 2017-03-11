@@ -67,8 +67,8 @@ var shopListTemplate = `
               </div>
             </a>
           </div>
-          {@if orderList[item.id] >0}
-            <span class="orderList-tip"><%= orderList[item.id] =></span>
+          {@if orderList[item.id] !== void 0}
+            <span class="orderList-tip"><%= orderList[item.id].allLength =></span>
           {@/if}
       </li>
       {@/each}  

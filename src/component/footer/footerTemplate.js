@@ -19,10 +19,12 @@ var footerTemplate = `
 		</div>
 	  </div>
 	  <div class="header-search weui-flex__item">
-	  	<div class='footer-select'>
-		  	<i class='icon-wodedingdan footer-icon'></i>
-		  	<p>订单</p>
-		</div>
+	  	<a href=${baseHost}#/orderList>
+		  	<div class='footer-select'>
+			  	<i class='icon-wodedingdan footer-icon'></i>
+			  	<p>订单</p>
+			</div>
+		</a>
 	  </div>
 	  <div class="header-search weui-flex__item">
 	  	<div class='footer-select'>

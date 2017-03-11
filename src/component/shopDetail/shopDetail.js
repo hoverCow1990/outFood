@@ -1,8 +1,9 @@
-import ShopMenu from './container/shopMenu';
-import ShopInfo from './container/shopInfo';
-import ShopTraffic from './container/ShopTraffic';
-import Footer from '../footer/footer';
-import shopDetailTemplate from './shopDetailTemplate';
+import store               from '../../store/store';
+import ShopMenu            from './container/shopMenu';
+import ShopInfo            from './container/shopInfo';
+import ShopTraffic         from './container/ShopTraffic';
+import Footer              from '../footer/footer';
+import shopDetailTemplate  from './shopDetailTemplate';
 import {requestshopDetail} from '../../requestApi/requestApi';
 
 /*
@@ -53,17 +54,20 @@ var ShopDetail = Backbone.View.extend({
   //更新数据
   setState : function(nextState){
     var id             = nextState.id,
-        baseShopData   = nextState.baseShopData,
-        shopDetailData = nextState.shopDetailData;
+        lastRouterId   = nextState.lastRouterId,
+        shopDetailData = store.shopDetail,
+        baseShopData;
     this.state.lastUrl = nextState.lastUrl;
-    if(shopDetailData.has(id)){                                   //当在shopDetailData内调用搜寻到id商户,代表之前有请求过,直接在缓存中调取信息
+    if(shopDetailData.has(id)){
       this.getCacheShopData(shopDetailData.get(id));
       return;
     }
-    if(baseShopData === void 0){                                  //代表baseShopData内(ShopList以及ShopListAssistent数据)没有搜索到商户id,可能是轮播或是专栏进入的链接
-
-    }else{                                                          
-      this.requestshopDetail({id:id,baseShopData:baseShopData});  //能在首页或者二级页的数据列表中搜索到基础数据,发送商户详情请求,与基础数据进行合并
+    if(lastRouterId === 'index'){
+      baseShopData = store.shopList.get(id).attributes;
+      !!baseShopData?this.requestshopDetail({id:id,baseShopData:baseShopData}):alert('没有数据');
+    }else{
+      baseShopData = store.shopListAssistant.get(id).attributes;
+      this.requestshopDetail({id:id,baseShopData:baseShopData});
     }
   },
   //请求用户数据,回调渲染view层
@@ -95,13 +99,13 @@ var ShopDetail = Backbone.View.extend({
   getCacheShopData : function(data){
       var state = data.attributes,
           menu = state.menu,
-          newMenu = Array.prototype.slice.call(menu),
+          //newMenu = Array.prototype.slice.call(menu),
           newState;
-      newMenu = newMenu.sort(function(a,b){
+      menu = menu.sort(function(a,b){
         return b.num - a.num;
       })
-      newState = $.extend({},state,{menu:newMenu});
-      data.set({menu:newMenu},{silent:true});
+      newState = $.extend(this.state,state);
+      //data.set({menu:newMenu},{silent:true});
       this.state = newState;
       this.state.shopDetailData = data;
       this.render();

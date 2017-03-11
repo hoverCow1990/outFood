@@ -1,3 +1,12 @@
+/*
+ *  CowMap
+ *	很久之前对百度地图Api的二次封装,只要传配置就可以生成百度地图
+ *  作者     : hoverCow
+ *  日期     : ??????[很久之前]
+ *  GitHub   : https://github.com/hoverCow1990/outFood
+ *
+ */
+
 var CowMap = (function(a,fn){
 	return fn();
 })(window,function(){

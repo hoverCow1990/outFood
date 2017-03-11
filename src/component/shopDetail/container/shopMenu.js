@@ -36,22 +36,31 @@ var ShopMenu = Backbone.View.extend({
   setState : function(shopDetailData,isShowBall){
     var shopDetailAttrs = shopDetailData.attributes,
         orderList = store.adminDetail.get('orderList'),
-        menu = shopDetailAttrs.menu,
+        id      = shopDetailAttrs.id,
+        logo    = shopDetailAttrs.logo,
+        menu    = shopDetailAttrs.menu,
+        start   = shopDetailAttrs.start,
+        express = shopDetailAttrs.express,
+        start   = shopDetailAttrs.start,
         payment = 0,allLength = 0,
         packageList = new Array(),value;
     menu.forEach(function(item,index){                            //计算需要的总费用以及产品数量
       if(item.num){
         value = item.num * item.value;
-        packageList.push({name:item.name,value:value,num:item.num})
+        packageList.push({
+          name :item.name,
+          value:value,
+          num  :item.num
+        })
         payment += value;
         allLength += item.num;
       }
     })
     this.state = {                                                //重设state
-      id          : shopDetailAttrs.id, 
-      express     : shopDetailAttrs.express,
-      logo        : shopDetailAttrs.logo,
-      start       : shopDetailAttrs.start,
+      id          : id, 
+      express     : express,
+      logo        : logo,
+      start       : start,
       menu        : menu,
       packageList : packageList,
       payment     : payment,
@@ -60,8 +69,8 @@ var ShopMenu = Backbone.View.extend({
     }
     this.render(isShowBall);                                      //渲染
     this.state.shopDetailData = shopDetailData;                   //设置orderList供shopList渲染的时候是否显示有订单的商铺以及产品数量
-    orderList[shopDetailAttrs.id] = allLength;
-    store.adminDetail.set({orderList:orderList},{silent:true})
+    if(allLength === 0) return delete orderList[shopDetailAttrs.id];          //如果没有值了就删除
+    orderList[id] = {id:id,logo:logo,allLength:allLength,list:packageList,time:new Date(),name:shopDetailAttrs.name,payment:payment,express:express,couldPay:start - payment};   //有数量就赋值以供订单页面操作
   },
   //渲染
   render : function(isShowBall){ 

@@ -36,7 +36,7 @@ DistanceQuery.prototype = {
 	        	}
 	    },area);												//传入的area为搜索地区,如'上海市'
 	},
-	//获取两点之间的行车距离以及时间
+	//获取坐标后传入handlerSearch获取两坐标间的行车距离,时间
 	getDistance : function(arr,adminPoints,success){			//参数为 [],new BMap.Point(x,y)对象,fn
 		var state = {length:arr.length,count:0},				//用json数据类型传入,由于是引用,多次累加后当count === arr.length时代表所有数据请求完毕
 			self  = this,newArr = new Array();		
@@ -54,6 +54,7 @@ DistanceQuery.prototype = {
 			success && success(arr);							//当数据全部执行完毕后调用传入的success
 		};
 	},
+	//进行经纬度的距离搜索
 	handlerSearch : function(item,shopPoints,adminPoints,state,callBack){		//{},new BMap.Point(x,y),new BMap.Point(x,y),{},fn
 		var driving = new BMap.DrivingRoute(this.map,{
 			onSearchComplete: function(results){   
