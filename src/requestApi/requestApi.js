@@ -146,5 +146,42 @@ function requestshopDetail(data,success,fail){
 	})
 } 
 
+/*
+ *==========================================================================================================
+ *
+ * requestshopColumn
+ * 请求商户详细信息,来自与首页轮播或者Column内还未加载基础信息的商铺
+ * data为 id:请求商铺的id
+ * -----------------------------------------------------------------------
+ * 返回json对象示例 : {...}
+ * collection:3252
+ * info:"麦当劳遍布全球六大洲119个国家"
+ * menu:[{id:0,name:'麦趣鸡盒',score:98,sell:478,value:26}]
+ */
 
-export {requestShopList,requestadminDetail,requestshopDetail};
+function requestshopColumn(data,success,fail){
+	$.ajax({
+		url : requestUrl.shopDetailColumn,
+		type : 'post',
+		dataType : 'json',
+		data : {
+			id : data.id
+		},
+		success: function(res){
+			res.menu = res.menu.map(function(item){
+				item = JSON.parse(item);
+				item.num = 0;
+				return item;
+			});
+			DistanceQuery.getDistance([res],store.adminDetail.get('adminPoints'),function(data){	//调用百度地图api换算商品与用户之间的距离与车程时间
+				data = $.extend(data[0],{pageTab:0,tabInfo:['点餐','详情','交通'],packageList:[],payment:0})
+				success && success(store.shopDetail.add(data));
+			});
+		},
+		error:function(err){
+			fail & fail(err);
+		}
+	})
+} 
+
+export {requestShopList,requestadminDetail,requestshopDetail,requestshopColumn};

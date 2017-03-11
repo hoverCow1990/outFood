@@ -4,7 +4,10 @@ import ShopInfo            from './container/shopInfo';
 import ShopTraffic         from './container/ShopTraffic';
 import Footer              from '../footer/footer';
 import shopDetailTemplate  from './shopDetailTemplate';
-import {requestshopDetail} from '../../requestApi/requestApi';
+import {
+        requestshopDetail,
+        requestshopColumn} from '../../requestApi/requestApi';
+
 
 /*
  *  ShopDetail
@@ -63,8 +66,8 @@ var ShopDetail = Backbone.View.extend({
       return;
     }
     if(lastRouterId === 'index'){
-      baseShopData = store.shopList.get(id).attributes;
-      !!baseShopData?this.requestshopDetail({id:id,baseShopData:baseShopData}):alert('没有数据');
+      baseShopData = store.shopList.get(id);
+      !!baseShopData?this.requestshopDetail({id:id,baseShopData:baseShopData.attributes}):this.requestshopColumn({id:id});
     }else{
       baseShopData = store.shopListAssistant.get(id).attributes;
       this.requestshopDetail({id:id,baseShopData:baseShopData});
@@ -73,6 +76,9 @@ var ShopDetail = Backbone.View.extend({
   //请求用户数据,回调渲染view层
   requestshopDetail : function(data){
     requestshopDetail(data,this.getNewShopData.bind(this))
+  },
+  requestshopColumn : function(data){
+    requestshopColumn(data,this.getNewShopData.bind(this))
   },
   //渲染
   render : function(){ 

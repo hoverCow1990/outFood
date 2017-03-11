@@ -14,6 +14,7 @@ import {baseHost} from '../../config/config';
 var shopListTemplate = `
   {@if routerId !== 'index'}
     <div class='storeList-banner'>
+      <div class='back'><a href="${baseHost}#/"><i class='icon-xiangzuojiantou'></i></a></div>
       <img src=<%= routerId|getUrl, "banner/","" => alt=""/>
     </div>
   {@/if}

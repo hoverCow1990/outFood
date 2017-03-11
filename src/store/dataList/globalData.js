@@ -16,7 +16,7 @@
  */
 
 var globalData = new Backbone.Model({
-	lastRouterId : '',
+	lastRouterId : [],
 	routerId : ''
 });
 

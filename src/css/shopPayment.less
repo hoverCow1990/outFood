@@ -22,6 +22,7 @@
 			height:80px;
 			float:left;
 			border-radius:50%;
+			border: 3px solid #d2d2d2;
 			overflow:hidden;
 			img{
 				display:block;
@@ -143,12 +144,36 @@
 	    height: 38px;
 	    margin-left: auto;
 	    margin-right: auto;
-	    background: #2a89ef;
+	    background: #999;
 	    line-height: 38px;
 	    border-radius: 3px;
 	    color: #eee;
 	    font-size: 16px;
 	    text-align: center;
 	    letter-spacing: 2px;
+	    &.active{
+	    	background: #2a89ef;
+	    }
+	}
+	.shopPayment-msg{
+		font-size:13px;
+		margin-bottom:10px;
+		text-align:center;
+		color: #ef4c4c;
+    	letter-spacing: 1px;
+    	font-weight: bold;
+	}
+	.shopPayment-hasPay{
+		margin-top:12px;
+		text-align:center;
+		i{
+		    font-size: 87px;
+		    color: #398e1f;
+		}
+		p{
+			font-size: 13px;
+		    letter-spacing: 2px;
+		    color: #666;
+		}
 	}
 }

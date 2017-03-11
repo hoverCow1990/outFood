@@ -68,8 +68,8 @@ var routerRender = {
 	},
 	//商铺详情页的渲染机制
 	shopDetailPage : function(routerId){
-		var lastRouterId   = store.globalData.get('lastRouterId'),
-			lastUrl		   = this.getAttr.url(lastRouterId);
+		var lastUrl		   = this.getAttr.lastUrl(),
+			lastRouterId   = this.getAttr.routerId(lastUrl);
 		ShopDetail.setState({														//ShopDetail更新数据进行渲染
 			id 			 : Number(routerId),
 			lastUrl 	 : lastUrl,
@@ -90,7 +90,10 @@ var routerRender = {
 		Header.resetBgColor();
 	},
 	shopPaymentPage : function(routerId){
-		ShopPayment.setState(store.adminDetail.get('orderList')[routerId]);
+		ShopPayment.setState({
+			id   : routerId,
+			data : store.adminDetail
+		});
 		Footer.render();
 		Header.resetBgColor();
 		ShopList.cancelEvents();
@@ -105,7 +108,7 @@ var routerRender = {
 		},
 		//监听到shopList数据变化后的事件
 		shopListEvent : function(shopListData){					
-			var routerId = store.globalData.get('routerId');	
+			var routerId = routerRender.getAttr.routerId(store.globalData.get('routerId'));	
 			ShopList.setState({									//对ShopList进行渲染
 				routerId 	 : routerId,
 				shopListData : shopListData
@@ -117,6 +120,14 @@ var routerRender = {
 	},
 	//获取一些属性
 	getAttr : {
+		routerId : function(routerId){
+			var arr = routerId.split('/');
+			return arr[arr.length - 1];
+		},
+		lastUrl : function(){
+			var arr = store.globalData.get('lastRouterId');
+			return arr[arr.length - 2];
+		},
 		address : function(){
 			return store.adminDetail.get('address');
 		},
@@ -128,7 +139,7 @@ var routerRender = {
 	//对之前路径以及新的路径进行配置
 	routerEvent : function(routerId){
 		var globalData   = store.globalData,
-			lastRouterId = globalData.get('routerId');
+			lastRouterId = globalData.get('lastRouterId').concat(routerId);
 		globalData.set({
 			lastRouterId : lastRouterId,
 			routerId 	 : routerId
@@ -167,18 +178,18 @@ app_router.on('route:index',function(){			//匹配至首页页面
 }).on('route:adminDetail',function(){			//匹配至用户详情页面
 	routerRender.routerEvent('adminDetail');
 	routerRender.adminDetailPage();
-}).on('route:shopList',function(routerId){		//匹配渲染商铺列表
-	routerRender.routerEvent(routerId);
-	routerRender.shopListPage(routerId);
-}).on('route:shopDetail',function(routerId){	//匹配渲染商户详情信息
-	routerRender.routerEvent(routerId);	
-	routerRender.shopDetailPage(routerId);		
+}).on('route:shopList',function(query){		//匹配渲染商铺列表
+	routerRender.routerEvent('shopList/' + query);
+	routerRender.shopListPage(query);
+}).on('route:shopDetail',function(query){	//匹配渲染商户详情信息
+	routerRender.routerEvent('shopDetail/'+ query);	
+	routerRender.shopDetailPage(query);		
 }).on('route:orderList',function(){				//匹配至订单页面
 	routerRender.routerEvent('orderList');		
 	routerRender.orderListPage();
-}).on('route:shopPayment',function(routerId){			//匹配至支付页面
-	routerRender.routerEvent(routerId);		
-	routerRender.shopPaymentPage(routerId);
+}).on('route:shopPayment',function(query){			//匹配至支付页面
+	routerRender.routerEvent('shopPayment' + query);		
+	routerRender.shopPaymentPage(query);
 })
 
 //开启路由机制
@@ -188,8 +199,8 @@ Backbone.history.start();
 store.adminDetail.on('change:address',function(adminDetailData){
 	routerRender.listener.addressEvent(adminDetailData);
 }).on('change:name change:balance',function(data){
-	if(store.globalData.get('routerId') !== 'adminDetail') return;
-	routerRender.listener.adminDetailEvent(data);
+	if(store.globalData.get('routerId') === 'adminDetail') routerRender.listener.adminDetailEvent(data);
+	//if(store.globalData.get('routerId') === 'shopPayment')	   routerRender.listener.adminDetailEvent(data);
 })
 
 //监听shopList模块的变化

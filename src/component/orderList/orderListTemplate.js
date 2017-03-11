@@ -41,7 +41,7 @@ var orderListTemplate = `
               {@if order.couldPay > 0}
                 <div class='payMore'>差<%= order.couldPay =>元</div>
               {@else}
-                <div class='active'><a>支付</a></div>
+                <div class='active'><a href=${baseHost}#/shopPayment/<%= order.id =>>支付</a></div>
               {@/if}
             </div>
           </div>

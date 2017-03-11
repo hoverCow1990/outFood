@@ -12,7 +12,7 @@ import {baseHost} from '../../config/config';
 var ShopDetailTemplate = `
 <div class='shopDetail-topLine'></div>
 <div class='shopDetail-hd' style='background:url(http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/banner/<%= tag =>.jpg)'>
-	<div class='back'><a href="${baseHost}#/<%= lastUrl =>"><i class='icon-xiangzuojiantou'></i></a></div>
+	<div class='back'><a href="${baseHost}#/<%= lastUrl.replace('index','') =>"><i class='icon-xiangzuojiantou'></i></a></div>
 	<div class='hd-bg'></div>
 	<div class='hd-container'>
 		<div class='hd-logo'>
