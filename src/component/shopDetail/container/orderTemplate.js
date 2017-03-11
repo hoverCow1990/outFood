@@ -18,11 +18,11 @@ var OrderTemplate = `
 		</a>
 	</div>
 	<div class='package-info'>
-		<div class='info-value'><p>¥</p><span class='payment'><%= payment =></span><p>+ 快递费¥</p><span><%= express =></span></div>
+		<div class='info-value'><p>¥</p><span class='payment'><%= payment.toFixed(1) =></span><p>+ 快递费¥</p><span><%= express =></span></div>
 		{@if payment - start >= 0}
 			<div class='info-btn active'><a href=${baseHost}#/shopPayment/<%= id =>>结算</a></div>
 		{@else}
-			<div class='info-btn'>差<%= start - payment =></div>
+			<div class='info-btn'>差<%= (start*10 - payment*10)/10 =></div>
 		{@/if}
 	</div>
 </div>

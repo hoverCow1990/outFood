@@ -134,7 +134,7 @@
 			'time' => 16,
 			'tag' => 'seafood',
 			'isLove' => false,
-			'search' => '海味,面食,中餐,意面'
+			'search' => '海味,面食,中餐,意面,炒面'
 		),
 		'9'=> array(
 			'id' => 9,
@@ -389,7 +389,7 @@
 			'time' => 13,
 			'tag' => 'chinese',
 			'isLove' => false,
-			'search' => '中餐,小笼包,面食,炒菜,春卷,包子,馒头,炒饭'
+			'search' => '炒面,小笼包,面食,炒菜,春卷,包子,馒头,炒饭'
 		),
 		'26'=> array(
 			'id' => 26,

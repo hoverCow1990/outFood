@@ -1,4 +1,4 @@
-// import {baseHost} from '../../config/config';
+import {baseHost} from '../../config/config';
 
 /*
  *  shopPaymentTemplate
@@ -12,7 +12,6 @@
 
 var shopPaymentTemplate = `
 <div class='shopPayment-banner'></div>
-<div class="outFood-ColumnTitle"><h3>支付环节</h3><p>Payment link</p></div>
 {@if hasPay === false}
   <div class='shopPayment-hd'>
       <div class='hd-logo'><img src='http://www.web-jackiee.com/templets/blog/demo/publicImage/outFood/<%= logo =>/logo.jpg'/></div>
@@ -28,7 +27,7 @@ var shopPaymentTemplate = `
       <h4>我的余额</h4>
       <div class='balance-cal'>
         <p class='all'><%= balance =></p>
-        <p class='minus'><%= payment - derate =></p>
+        <p class='minus'>-<%= payment - derate =></p>
         <p class='result'><%= (balance*10 - payment*10 + derate*10)/10 =></p>
       </div>
     </div>
@@ -44,15 +43,16 @@ var shopPaymentTemplate = `
     </div>
   </div>
   {@if (balance*10 -payment*10 + derate*10)/10 >= 0}
-    <div class='shopPayment-ensure active'>支付<%= Math.min((payment - derate),0) =>元</div>
+    <div class='shopPayment-ensure active'>支付<%= (payment*10 - derate*10)/10 =>元</div>
   {@else}
-    <p class='shopPayment-msg'>可至右下角信息页面进行充值...</p>
+    <p class='shopPayment-msg'>点击右下角信息页面进行充值...</p>
     <div class='shopPayment-ensure'>余额不足</div>
   {@/if}
 {@else}
   <div class='shopPayment-hasPay'>
     <i class='icon-wancheng'></i>
     <p>订单支付成功!</p>
+    <p class='goIndex'><a href=${baseHost}#>返回首页</a></p>
   </div>
 {@/if}
 `

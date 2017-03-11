@@ -1,6 +1,6 @@
 import store               from '../../store/store';
 import {baseHost}          from '../../config/config';
-import DistanceQuery       from '../../lib/distanceQuery';
+import DistanceQuery       from '../../lib/DistanceQuery';
 import adminDetailTemplate from './adminDetailTemplate';
 
 /*

@@ -13,7 +13,7 @@ var indexTemplate = `
   <div class="swiper-wrapper">
     <div class="swiper-slide"><a href=${baseHost}#/shopList/肉><img src="../images/carousel/1.jpg" alt=""></a></div>
     <div class="swiper-slide"><a href=${baseHost}#/shopDetail/61><img src="../images/carousel/2.jpg" alt=""></a></div>
-    <div class="swiper-slide"><img src="../images/carousel/3.jpg" alt=""></div>
+    <div class="swiper-slide"><a href=${baseHost}#/shopDetail/13><img src="../images/carousel/3.jpg" alt=""></a></div>
     <div class="swiper-slide"><a href=${baseHost}#/shopDetail/60><img src="../images/carousel/4.jpg" alt=""></a></div>
     <div class="swiper-slide"><a href=${baseHost}#/shopList/夜宵><img src="../images/carousel/5.jpg" alt=""></a></div>
   </div>

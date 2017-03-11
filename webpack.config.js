@@ -35,6 +35,6 @@ module.exports = {
 		    "Backbone" : "Backbone",
 		    '_':'underscore',
 		    'juicer' : 'juicer',
-	    })
-    ]
+	    }),
+    ],
 }

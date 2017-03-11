@@ -2,7 +2,7 @@ import shopPaymentTemplate from './shopPaymentTemplate';
 
 /*
  *  ShopPayment
- *  渲染用户订单页面,在尾部,menu页,用户信息页均有入口
+ *  订单支付页面
  *  作者     : hoverCow
  *  日期     : 2017-03-11
  *  GitHub   : https://github.com/hoverCow1990/outFood
@@ -21,7 +21,7 @@ import shopPaymentTemplate from './shopPaymentTemplate';
  */
 
 
-//商户列表页的试图层
+//支付页的试图层
 var ShopPayment = Backbone.View.extend({  
 	tagName : 'div',  
 	className : 'shopPayment',
@@ -44,7 +44,7 @@ var ShopPayment = Backbone.View.extend({
 			redPacket   = adminDetail.get('redPacket'),
 			orderList   = adminDetail.get('orderList')[id];
 		if(orderList === void 0){
-			this.state = {hasPay : true};
+			this.state  = {hasPay : true};
 			this.render();
 			return;
 		}

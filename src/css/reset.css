@@ -44,7 +44,6 @@ li{
 .weui-dialog .weui-dialog__btn + .weui-dialog__btn:after, .weui-toast .weui-dialog__btn + .weui-dialog__btn:after{
   border-left:0;
 }
-
 @font-face {
   font-family: "iconfont";
   src: url('../font/iconfont.eot'); /* IE9*/
@@ -87,6 +86,7 @@ i{
    font-size:452%;
   }
 }
+
 .icon-iconfont5:before { content: "\e63a"; }
 
 .icon-gouwuche:before { content: "\e63f"; }

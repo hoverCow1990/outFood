@@ -30,6 +30,7 @@ var routerRender = {
 	//首次登录的执行事件
 	init : function(){
 		var callBack = ShopList.requestShopList.bind(ShopList,'index');	
+		this.startLoadingMask();
 		Header.requestadminDetail(callBack);					//发起用户数据的请求,会改变用户adrress,引发Header的渲染,回调请求ShopList数据,并引发ShopList的渲染
 		Index.setState({scrollTop:0});				  			//渲染index页面
 		Footer.render();										//渲染Footer
@@ -70,17 +71,18 @@ var routerRender = {
 	shopDetailPage : function(routerId){
 		var lastUrl		   = this.getAttr.lastUrl(),
 			lastRouterId   = this.getAttr.routerId(lastUrl);
-		ShopDetail.setState({														//ShopDetail更新数据进行渲染
+		ShopDetail.setState({									//ShopDetail更新数据进行渲染
 			id 			 : Number(routerId),
 			lastUrl 	 : lastUrl,
 			lastRouterId : lastRouterId
 		});
-		ShopList.cancelEvents();													//注销ShopList滚屏事件
-		Header.resetBgColor();														//重设Header的背景色
+		ShopList.cancelEvents();								//注销ShopList滚屏事件
+		Header.resetBgColor();									//重设Header的背景色
 	},
 	//用户详情的渲染机制
 	adminDetailPage : function(){
 		AdminDetail.setState(store.adminDetail);
+		ShopList.cancelEvents();
 	},
 	//订单详情页面
 	orderListPage : function(){		
@@ -102,14 +104,14 @@ var routerRender = {
 	listener : {
 		//监听到adminDetail中地址变化后的事件
 		addressEvent : function(adminDetailData){
-			var address = adminDetailData.get('address');
+			var address  = adminDetailData.get('address');
 			Header.setState({address:address});				//对头部地址进行新的渲染
-
+			routerRender.endLoadingMask();
 		},
 		//监听到shopList数据变化后的事件
 		shopListEvent : function(shopListData){					
 			var routerId = routerRender.getAttr.routerId(store.globalData.get('routerId'));	
-			ShopList.setState({									//对ShopList进行渲染
+			ShopList.setState({								//对ShopList进行渲染
 				routerId 	 : routerId,
 				shopListData : shopListData
 			});
@@ -144,6 +146,26 @@ var routerRender = {
 			lastRouterId : lastRouterId,
 			routerId 	 : routerId
 		})
+	},
+	startLoadingMask : function(){
+		setTimeout(function(){
+			$('#loading-masker').addClass('active');
+		},100)
+	},
+	endLoadingMask : function(){
+		var $mask 	  = $('#loading-masker'),
+			$entrence = $mask.find('.app-entrence');
+		if(!$mask.length) return;
+		setTimeout(function(){
+			$entrence.addClass('active').on('touchstart',function(){
+				$mask.animate({opacity:0},1200,function(){
+					$mask.remove();
+					$entrence.off();
+					$mask = null;
+					$entrence = null;
+				})
+			})
+		},100)
 	}
 }
 

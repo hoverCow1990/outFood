@@ -1,5 +1,5 @@
-var baseHost = 'http://192.168.1.3:3000/dist/views/app.html'; //手机同步测试
-//var baseHost = 'http://www.web-jackiee.com/templets/blog/demo/outFood/views/app.html'; //正式上线地址
+//var baseHost = 'http://192.168.1.3:3000/dist/views/app.html'; //手机同步测试
+var baseHost = 'http://www.web-jackiee.com/templets/blog/demo/backbone/outFood/views/app.html'; //正式上线地址
 
 
 /*

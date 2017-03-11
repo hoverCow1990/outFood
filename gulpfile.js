@@ -1,23 +1,24 @@
-var gulp = require('gulp'),
-    clean = require('gulp-clean'),
-    less = require('gulp-less'),
-    cssmin = require('gulp-minify-css'),
-    autoprefixer = require('gulp-autoprefixer'),
-    sourcemaps = require('gulp-sourcemaps'),
-    fileinclude = require('gulp-file-include'),
-    htmlmin = require('gulp-htmlmin'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    os = require('os'),
-    connect = require('gulp-connect'),
-    gulpopen = require('gulp-open'),
-    webpack = require('webpack'),
+var gulp          = require('gulp'),
+    clean         = require('gulp-clean'),
+    less          = require('gulp-less'),
+    cssmin        = require('gulp-minify-css'),
+    autoprefixer  = require('gulp-autoprefixer'),
+    sourcemaps    = require('gulp-sourcemaps'),
+    fileinclude   = require('gulp-file-include'),
+    htmlmin       = require('gulp-htmlmin'),
+    concat        = require('gulp-concat'),
+    uglify        = require('gulp-uglify'),
+    os            = require('os'),
+    connect       = require('gulp-connect'),
+    gulpopen      = require('gulp-open'),
+    webpack       = require('webpack'),
     webpackConfig = require('./webpack.config.js'),
-    gulpwebpack = require('gulp-webpack'),
-    browserSync = require('browser-sync').create();
+    gulpwebpack   = require('gulp-webpack'),
+    browserSync   = require('browser-sync').create(),
+    babel         = require('gulp-babel');
 
 //各各文件路径 
-var {INC_URL,SRC_BASE,SRC_ALL,SRC_HTML,SRC_INC,SRC_LCSS,SRC_JS,SRC_IMG,DEV_BASE,DEV_HTML,DEV_LCSS,DEV_JS,DEV_IMG,BLD_BASE,BLD_HTML,BLD_LCSS,BLD_JS,BLD_IMG,MIX_CSSBOOL,MIX_CSSName,MIX_CSSPATH,MIX_JS,MIX_JSName,MIX_JSSPATH,WATCH_FILE} = require('./paths.js').path;
+var {INC_URL,SRC_BASE,SRC_ALL,SRC_HTML,SRC_CSS,SRC_LESS,SRC_JS,SRC_IMG,SRC_INC,DEV_BASE,DEV_HTML,DEV_CSS,DEV_JS,DEV_IMG,BLD_BASE,BLD_HTML,BLD_CSS,BLD_JS,BLD_IMG,MIX_CSSBOOL,MIX_CSSName,MIX_DEVPATH,MIX_BLDPATH,MIX_JS,MIX_JSName,MIX_JSSPATH,WATCH_FILE} = require('./paths.js').path;
 //服务器设置
 var HOST = {
     path: './',
@@ -74,26 +75,41 @@ gulp.task('handlerBldHtml', function() {
  *
  */
 
-//concatCss函数
-var concatCss = function(){
-                gulp.src(MIX_CSSPATH)
-                 .pipe(concat(MIX_CSSName))//合并后的文件名
-                 .pipe(gulp.dest(BLD_LCSS))
-            }
-console.log(SRC_LCSS);
 //开发模式
 gulp.task('handlerDevCss', function () {
-    gulp.src(SRC_LCSS)
-        .pipe(less())
-        .pipe(gulp.dest(DEV_LCSS))
+    gulp.src(SRC_CSS)
+        .pipe(gulp.dest(DEV_CSS))
         .on("end",function(){
-            gulp.src(DEV_LCSS).pipe(browserSync.reload({stream: true})) 
+            gulp.src(DEV_CSS).pipe(browserSync.reload({stream: true})) 
+        });
+})
+
+
+//生产模式
+gulp.task('handlerBldCss', function () {
+    gulp.src(SRC_CSS)
+        .pipe(gulp.dest(BLD_CSS))
+        .on("end",function(){
+        });
+})
+
+
+
+//生产模式
+gulp.task('handlerDevLess', function () {
+    gulp.src(SRC_LESS)
+        .pipe(less())
+        .pipe(concat(MIX_CSSName))
+        .pipe(gulp.dest(DEV_CSS))
+        .on("end",function(){
+           // MIX_CSSBOOL && concatCss(MIX_DEVPATH);
+            gulp.src(DEV_CSS).pipe(browserSync.reload({stream: true})) 
         });
 })
 
 //生产模式
-gulp.task('handlerBldCss', function () {
-    gulp.src(SRC_LCSS) 
+gulp.task('handlerBldLess', function () {
+    gulp.src(SRC_LESS) 
         .pipe(less())
         .pipe(cssmin())     //.pipe(cssmin({compatibility: 'ie7'}))兼容ie7
         .pipe(autoprefixer({
@@ -101,10 +117,10 @@ gulp.task('handlerBldCss', function () {
             cascade: false, //是否美化属性值 默认：true 像这样：
             remove:true     //是否去掉不必要的前缀 默认：true 
         }))
-        .pipe(gulp.dest(BLD_LCSS))
+        .pipe(concat(MIX_CSSName))
+        .pipe(gulp.dest(BLD_CSS))
         .on("end",function(){
-            MIX_CSSBOOL && concatCss();
-            gulp.src(BLD_LCSS);
+
         });
 })
 
@@ -113,7 +129,6 @@ gulp.task('handlerBldCss', function () {
  * js处理部分
  *
  */
-console.log(DEV_JS);
 //开发模式
 gulp.task('handlerDevJs', function() {
     gulp.src(SRC_JS)
@@ -128,6 +143,9 @@ gulp.task('handlerDevJs', function() {
 gulp.task('handlerBldJs', function() {
     gulp.src(SRC_JS)
         .pipe(gulpwebpack(webpackConfig,webpack))
+        .pipe(babel({
+          presets: ['es2015']
+        }))
         .pipe(uglify({
             mangle: true,               //类型：Boolean 默认：true 是否修改变量名
             compress: true,             //类型：Boolean 默认：true 是否完全压缩
@@ -135,7 +153,7 @@ gulp.task('handlerBldJs', function() {
         }))
         .pipe(gulp.dest(BLD_JS))
         .on("end",function(){
-            gulp.src(DEV_JS);
+            //gulp.src(DEV_JS);
         })
 })
 
@@ -207,10 +225,10 @@ gulp.task("cleanMixCss",function(){
 })
 
 //合并Css
-gulp.task('concatCss', function (done) {
-    gulp.src(["dist/css/**/*","!dist/css/style.min.css"])
+gulp.task('concatCss', function(done){
+    gulp.src(["build/css/**/*","!build/css/style.min.css"])
         .pipe(concat("style.min.css"))//合并后的文件名
-        .pipe(gulp.dest("dist/css"))
+        .pipe(gulp.dest("build/css"))
         .on("end",done);
 })
 
@@ -229,7 +247,7 @@ gulp.task('watchHtml',["connect"],function () {
 
 //观察CSS
 gulp.task('watchCss',["connect"],function () {
-    gulp.watch(SRC_LCSS,["handlerDevCss"])
+    gulp.watch(SRC_LESS,["handlerDevCss"])
     .on('change',browserSync.reload);
 })
 
@@ -240,14 +258,16 @@ gulp.task('watchJs', function () {
 })
 
 //启动服务
-gulp.task('start',["handlerDevHtml","handlerDevCss","copy:DevImages","handlerDevJs","connect"],function(){
+gulp.task('start',["handlerDevHtml","handlerDevLess","copy:DevImages",'handlerDevCss',"handlerDevJs","connect"],function(){
     gulp.watch(SRC_HTML,["handlerDevHtml"]);
     gulp.watch(SRC_INC,["handlerDevHtml"]);
-    gulp.watch(SRC_LCSS,["handlerDevCss"]);
+    gulp.watch(SRC_LESS,["handlerDevLess"]);
     gulp.watch(SRC_JS,["handlerDevJs"]);
+    gulp.watch(SRC_CSS,["handlerDevCss"]);
+    gulp.watch(SRC_IMG,["copy:DevImages"]);
 })
 
 //最后编译
-gulp.task('build',["handlerBldHtml","handlerBldCss","copy:BldImages","handlerBldJs"],function(){
+gulp.task('build',["handlerBldHtml","handlerBldLess","copy:BldImages",'handlerBldCss',"handlerBldJs"],function(){
 
 })

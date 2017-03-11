@@ -46,7 +46,7 @@ var OrderList = Backbone.View.extend({
 	    this.delegateEvents(); 	
 	},
 	//初始化事件,滚屏事件,如果页面滚到shopList底部部分,开始新的请求,并且初始化二级页的滚动高度
-	initEvents(){
+	initEvents : function(){
 		$('.toBeBay').css('height',$(window).height() - 262)
 	},
 });

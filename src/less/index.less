@@ -127,3 +127,89 @@
 		border-radius:3px;
 	}
 }
+
+
+#loading-masker{
+	display:flex;
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	justify-content:center;
+	align-items:center;
+	z-index:99999;
+	background-color:#54a0ff;
+	.masker-container{
+		position:relative;
+		width:210px;
+		height:230px;
+		margin-top:-50px;
+	}
+	.cowLogo{
+		position:absolute;
+		left:48px;
+		top:-30px;
+		transform:translate3d(-300px,-300px,0) rotate(1300deg);
+		transition:1.8s;
+	}
+	.tf{
+		display:flex;		
+		position:absolute;
+		width:90%;
+		top:128px;
+		left:5%;
+		justify-content:space-between;
+		img{
+			opacity:0;
+			transform:scale(1.5);
+		}
+		img:nth-child(1){
+			transition: opacity 0s 1.8s,transform 0.3s 1.8s;
+		}
+		img:nth-child(2){
+			transition: opacity 0s 2.1s,transform 0.3s 2.1s;
+		}
+		img:nth-child(3){
+			transition: opacity 0s 2.4s,transform 0.3s 2.4s;
+		}
+		img:nth-child(4){
+			transition: opacity 0s 2.7s,transform 0.3s 2.7s;
+		}
+	}
+	&.active{
+		.tf{
+			img{
+				opacity:1;
+				transform:scale(1);
+			}
+		}
+		.cowLogo{
+			transform:translate3d(0,0,0) rotate(0);
+		}
+	}
+	.app-entrence{
+		position: absolute;
+	    width: 110px;
+	    height: 36px;
+	    bottom: 66px;
+	    left: 50%;
+	    margin-left: -55px;
+	    border-radius: 4px;
+	    background-color: #ffffff;
+	    border: 2px solid #222;
+	    font-size: 15px;
+	    text-align: center;
+	    line-height: 36px;
+	    color: #212121;
+	    font-weight: bold;
+	    letter-spacing: 2px;
+	    transorm:translate3d(0,300px,0);
+	    opacity:0;
+	    transition:opacity .3s 3s,transition 0s 3s;
+	    &.active{
+	    	opacity:1;
+	    	transform:translate3d(0,0,0);
+	    }
+	}
+}

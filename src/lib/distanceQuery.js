@@ -18,7 +18,7 @@ var defaultConfig = {
 //DistanceQuery构造函数
 function DistanceQuery(option){
 	this.option = $.extend({},defaultConfig,option);	//继承默认属性
-	this.map = new BMap.Map();							//定义出百度地图
+	this.map 	= new BMap.Map();							//定义出百度地图
 }
 
 //DistanceQuery原型
