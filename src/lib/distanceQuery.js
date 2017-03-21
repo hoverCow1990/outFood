@@ -59,9 +59,9 @@ DistanceQuery.prototype = {
 		var driving = new BMap.DrivingRoute(this.map,{
 			onSearchComplete: function(results){   
 			    if(driving.getStatus() == BMAP_STATUS_SUCCESS){
-			    	var res = results.ur[0];
-			    	item.trafficTime = Math.ceil(res.Oq/60) * 2;				//设置当前循环数据的交通时间,由于是驾车,所以此处将自行车的行驶时间大致*2
-			    	item.distance = (res.cg/1000).toFixed(1);					//设置当前循环数据的距离
+			    	var res = results.jr[0];
+			    	item.trafficTime = Math.ceil(res.Dq/60) * 2;				//设置当前循环数据的交通时间,由于是驾车,所以此处将自行车的行驶时间大致*2
+			    	item.distance = (res.Zf/1000).toFixed(1);					//设置当前循环数据的距离
 			    	if(++state.count === state.length) callBack();				//当全部循环结束的时候执行回调函数
 			    }    
 			}  

@@ -10,6 +10,7 @@
 /*
  *	数据示例 : {
  *		routerId : 'adminDetail',  	//当前路由匹配路径
+ *		lastRouterId :
  *	}
  *
  *		
